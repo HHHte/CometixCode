@@ -1,5 +1,10 @@
 # CometixCode
 
+English | [简体中文](README_CN.md)
+
+![Rust](https://img.shields.io/badge/Rust-2024-orange?logo=rust&logoColor=white)
+![License](https://img.shields.io/badge/License-AGPL--3.0-blue)
+
 A terminal-based AI coding assistant, written in Rust as a 1:1 reimplementation
 of Anthropic's Claude Code.
 
@@ -85,6 +90,23 @@ threads in one process, and this codebase has process-wide state (env vars,
 a test would otherwise inherit. The justfile header explains the measurements
 behind that.
 
+## Community
+
+<a href="https://qm.qq.com/q/nmbS5eUUP8" target="_blank"><img src="https://img.shields.io/badge/QQ%20群-1045122926-EB1923?logo=tencentqq&logoColor=white" alt="QQ Group" /></a>
+<a href="https://t.me/CometixSpace" target="_blank"><img alt="telegram" src="https://img.shields.io/badge/chat-telegram-blueviolet?style=flat&logo=Telegram"></a>
+[![LINUX DO](https://img.shields.io/badge/LINUX%20DO-Community-blue)](https://linux.do/t/topic/2927016)
+
+## Acknowledgements
+
+- **[Anthropic]** — for Claude Code, the program this reimplements. Every
+  behaviour here was derived from studying it; the design credit is theirs.
+- **[iocraft]** by ccbrown — the React-style retained-mode TUI framework this is
+  built on. [CometixTUI] is a fork of it.
+- **[ripgrep]** by BurntSushi — the file search every `Grep`, `Glob` and
+  discovery path shells out to.
+- **[nucleo]** by the Helix editor project — the fuzzy matcher behind file,
+  command and agent completion.
+
 ## License
 
 [AGPL-3.0-only](LICENSE).
@@ -93,3 +115,7 @@ Note the network clause: if you run a modified version as a network service,
 its users are entitled to the modified source.
 
 [CometixTUI]: https://github.com/Haleclipse/CometixTUI
+[Anthropic]: https://www.anthropic.com
+[iocraft]: https://github.com/ccbrown/iocraft
+[ripgrep]: https://github.com/BurntSushi/ripgrep
+[nucleo]: https://github.com/helix-editor/nucleo
