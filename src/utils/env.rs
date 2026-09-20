@@ -1,0 +1,203 @@
+//! ```ts
+//! export const env = {
+//!   platform,         // 'win32' | 'darwin' | 'linux'
+//!   arch,             // process.arch
+//!   terminal,         // detectTerminal()
+//!   isCI,             // isEnvTruthy('CI')
+//!   isSSH,            // isSSHSession()
+//!   ...
+//! }
+//! ```
+
+use std::env;
+use std::sync::OnceLock;
+
+static ENV: OnceLock<Env> = OnceLock::new();
+
+pub fn get() -> &'static Env {
+    ENV.get_or_init(Env::detect)
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Platform {
+    MacOS,
+    Linux,
+    Windows,
+}
+
+/// Maps to CC `getPlatform() === 'wsl'` detection used by timeout and path
+/// security policy.
+pub fn is_wsl() -> bool {
+    if env::var_os("WSL_DISTRO_NAME").is_some() || env::var_os("WSL_INTEROP").is_some() {
+        return true;
+    }
+    #[cfg(target_os = "linux")]
+    {
+        return std::fs::read_to_string("/proc/version")
+            .is_ok_and(|version| version.to_ascii_lowercase().contains("microsoft"));
+    }
+    #[cfg(not(target_os = "linux"))]
+    false
+}
+
+#[derive(Debug)]
+pub struct Env {
+    pub platform: Platform,
+    pub terminal: Option<String>,
+    pub is_ci: bool,
+    pub is_ssh: bool,
+}
+
+impl Env {
+    fn detect() -> Self {
+        Self {
+            platform: detect_platform(),
+            terminal: detect_terminal(),
+            is_ci: crate::utils::env_utils::is_env_truthy(std::env::var("CI").ok().as_deref()),
+            is_ssh: is_ssh_session(),
+        }
+    }
+}
+
+fn detect_terminal() -> Option<String> {
+    if env::var("CURSOR_TRACE_ID").is_ok() {
+        return Some("cursor".into());
+    }
+    if let Ok(askpass) = env::var("VSCODE_GIT_ASKPASS_MAIN") {
+        if askpass.contains("cursor") {
+            return Some("cursor".into());
+        }
+        if askpass.contains("windsurf") {
+            return Some("windsurf".into());
+        }
+        if askpass.contains("antigravity") {
+            return Some("antigravity".into());
+        }
+    }
+    // __CFBundleIdentifier (macOS, lines 147-156)
+    if let Ok(bundle) = env::var("__CFBundleIdentifier") {
+        let lower = bundle.to_lowercase();
+        if lower.contains("vscodium") {
+            return Some("codium".into());
+        }
+        if lower.contains("windsurf") {
+            return Some("windsurf".into());
+        }
+    }
+
+    // Visual Studio (line 158)
+    if env::var("VisualStudioVersion").is_ok() {
+        return Some("visualstudio".into());
+    }
+
+    // JetBrains (lines 164-169)
+    if env::var("TERMINAL_EMULATOR").as_deref() == Ok("JetBrains-JediTerm") {
+        return Some("pycharm".into());
+    }
+
+    if let Ok(term) = env::var("TERM") {
+        if term == "xterm-ghostty" {
+            return Some("ghostty".into());
+        }
+        if term.contains("kitty") {
+            return Some("kitty".into());
+        }
+    }
+
+    // Apple_Terminal, iTerm.app, WezTerm, vscode, WarpTerminal, etc.
+    if let Ok(tp) = env::var("TERM_PROGRAM") {
+        return Some(tp);
+    }
+
+    // tmux / screen (lines 185-186)
+    if env::var("TMUX").is_ok() {
+        return Some("tmux".into());
+    }
+    if env::var("STY").is_ok() {
+        return Some("screen".into());
+    }
+
+    if env::var("KONSOLE_VERSION").is_ok() {
+        return Some("konsole".into());
+    }
+    if env::var("GNOME_TERMINAL_SERVICE").is_ok() {
+        return Some("gnome-terminal".into());
+    }
+    if env::var("XTERM_VERSION").is_ok() {
+        return Some("xterm".into());
+    }
+    if env::var("VTE_VERSION").is_ok() {
+        return Some("vte-based".into());
+    }
+    if env::var("TERMINATOR_UUID").is_ok() {
+        return Some("terminator".into());
+    }
+    if env::var("KITTY_WINDOW_ID").is_ok() {
+        return Some("kitty".into());
+    }
+    if env::var("ALACRITTY_LOG").is_ok() {
+        return Some("alacritty".into());
+    }
+    if env::var("TILIX_ID").is_ok() {
+        return Some("tilix".into());
+    }
+
+    // Windows (lines 201-210)
+    if env::var("WT_SESSION").is_ok() {
+        return Some("windows-terminal".into());
+    }
+    if env::var("SESSIONNAME").is_ok() && env::var("TERM").as_deref() == Ok("cygwin") {
+        return Some("cygwin".into());
+    }
+    if let Ok(msystem) = env::var("MSYSTEM") {
+        return Some(msystem.to_lowercase());
+    }
+    if env::var("ConEmuANSI").is_ok()
+        || env::var("ConEmuPID").is_ok()
+        || env::var("ConEmuTask").is_ok()
+    {
+        return Some("conemu".into());
+    }
+
+    // WSL (line 213)
+    if let Ok(distro) = env::var("WSL_DISTRO_NAME") {
+        return Some(format!("wsl-{distro}"));
+    }
+
+    // SSH (lines 216-218)
+    if is_ssh_session() {
+        return Some("ssh-session".into());
+    }
+
+    // TERM fallback (lines 222-228)
+    if let Ok(term) = env::var("TERM") {
+        if term.contains("alacritty") {
+            return Some("alacritty".into());
+        }
+        if term.contains("rxvt") {
+            return Some("rxvt".into());
+        }
+        if term.contains("termite") {
+            return Some("termite".into());
+        }
+        return Some(term);
+    }
+
+    None
+}
+
+fn detect_platform() -> Platform {
+    if cfg!(target_os = "macos") {
+        Platform::MacOS
+    } else if cfg!(target_os = "windows") {
+        Platform::Windows
+    } else {
+        Platform::Linux
+    }
+}
+
+fn is_ssh_session() -> bool {
+    env::var("SSH_CONNECTION").is_ok()
+        || env::var("SSH_CLIENT").is_ok()
+        || env::var("SSH_TTY").is_ok()
+}

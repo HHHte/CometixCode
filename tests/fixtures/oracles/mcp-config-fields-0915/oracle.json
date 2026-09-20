@@ -1,0 +1,134 @@
+[
+  {
+    "input": {
+      "type": "sdk",
+      "name": "sdk-host"
+    },
+    "parsed": {
+      "type": "sdk",
+      "name": "sdk-host"
+    },
+    "hash": "ed6bf5d1132313b0",
+    "changedHash": "e3d690b373d18df1",
+    "sameAfterScope": true,
+    "sameAfterChange": false
+  },
+  {
+    "input": {
+      "type": "sdk",
+      "name": ""
+    },
+    "parsed": {
+      "type": "sdk",
+      "name": ""
+    },
+    "hash": "28f7a97c6a1c57ba",
+    "changedHash": "e3d690b373d18df1",
+    "sameAfterScope": true,
+    "sameAfterChange": false
+  },
+  {
+    "input": {
+      "type": "sse-ide",
+      "url": "ws://local",
+      "ideName": "IDE"
+    },
+    "parsed": {
+      "type": "sse-ide",
+      "url": "ws://local",
+      "ideName": "IDE"
+    },
+    "hash": "e55b5bad858ae35e",
+    "changedHash": "a1da9fd867df8224",
+    "sameAfterScope": true,
+    "sameAfterChange": false
+  },
+  {
+    "input": {
+      "type": "sse-ide",
+      "url": "ws://local",
+      "ideName": "IDE",
+      "ideRunningInWindows": false
+    },
+    "parsed": {
+      "type": "sse-ide",
+      "url": "ws://local",
+      "ideName": "IDE",
+      "ideRunningInWindows": false
+    },
+    "hash": "8fe7338f9ff06d1a",
+    "changedHash": "a1da9fd867df8224",
+    "sameAfterScope": true,
+    "sameAfterChange": false
+  },
+  {
+    "input": {
+      "type": "sse-ide",
+      "url": "ws://local",
+      "ideName": "IDE",
+      "ideRunningInWindows": true
+    },
+    "parsed": {
+      "type": "sse-ide",
+      "url": "ws://local",
+      "ideName": "IDE",
+      "ideRunningInWindows": true
+    },
+    "hash": "a1da9fd867df8224",
+    "changedHash": "8fe7338f9ff06d1a",
+    "sameAfterScope": true,
+    "sameAfterChange": false
+  },
+  {
+    "input": {
+      "type": "ws-ide",
+      "url": "ws://local",
+      "ideName": "IDE"
+    },
+    "parsed": {
+      "type": "ws-ide",
+      "url": "ws://local",
+      "ideName": "IDE"
+    },
+    "hash": "97a8fbfae5c9a1ac",
+    "changedHash": "649bcd8c057027e8",
+    "sameAfterScope": true,
+    "sameAfterChange": false
+  },
+  {
+    "input": {
+      "type": "ws-ide",
+      "url": "ws://local",
+      "ideName": "IDE",
+      "ideRunningInWindows": false
+    },
+    "parsed": {
+      "type": "ws-ide",
+      "url": "ws://local",
+      "ideName": "IDE",
+      "ideRunningInWindows": false
+    },
+    "hash": "eb076ae074b11eec",
+    "changedHash": "649bcd8c057027e8",
+    "sameAfterScope": true,
+    "sameAfterChange": false
+  },
+  {
+    "input": {
+      "type": "ws-ide",
+      "url": "ws://local",
+      "ideName": "IDE",
+      "ideRunningInWindows": true
+    },
+    "parsed": {
+      "type": "ws-ide",
+      "url": "ws://local",
+      "ideName": "IDE",
+      "ideRunningInWindows": true
+    },
+    "hash": "649bcd8c057027e8",
+    "changedHash": "eb076ae074b11eec",
+    "sameAfterScope": true,
+    "sameAfterChange": false
+  }
+]

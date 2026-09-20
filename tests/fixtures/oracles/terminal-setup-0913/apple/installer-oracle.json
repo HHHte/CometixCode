@@ -1,0 +1,524 @@
+[
+  {
+    "name": "same_profile_success",
+    "input": {
+      "name": "same_profile_success",
+      "profiles": [
+        "Basic",
+        "Basic"
+      ],
+      "codes": [
+        0,
+        0,
+        0
+      ]
+    },
+    "result": "Configured Terminal.app settings:\n- Enabled \"Use Option as Meta key\"\n- Switched to visual bell\nOption+Enter will now enter a newline.\nYou must restart Terminal.app for changes to take effect. dark\n",
+    "events": [
+      [
+        "backup"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "read",
+          "com.apple.Terminal",
+          "Default Window Settings"
+        ]
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "read",
+          "com.apple.Terminal",
+          "Startup Window Settings"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Add :'Window Settings':'Basic':useOptionAsMetaKey bool true",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Add :'Window Settings':'Basic':Bell bool false",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "killall",
+        [
+          "cfprefsd"
+        ]
+      ],
+      [
+        "complete"
+      ]
+    ],
+    "logs": []
+  },
+  {
+    "name": "different_profiles_success",
+    "input": {
+      "name": "different_profiles_success",
+      "profiles": [
+        " Basic ",
+        " Pro "
+      ],
+      "codes": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "result": "Configured Terminal.app settings:\n- Enabled \"Use Option as Meta key\"\n- Switched to visual bell\nOption+Enter will now enter a newline.\nYou must restart Terminal.app for changes to take effect. dark\n",
+    "events": [
+      [
+        "backup"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "read",
+          "com.apple.Terminal",
+          "Default Window Settings"
+        ]
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "read",
+          "com.apple.Terminal",
+          "Startup Window Settings"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Add :'Window Settings':'Basic':useOptionAsMetaKey bool true",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Add :'Window Settings':'Basic':Bell bool false",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Add :'Window Settings':'Pro':useOptionAsMetaKey bool true",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Add :'Window Settings':'Pro':Bell bool false",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "killall",
+        [
+          "cfprefsd"
+        ]
+      ],
+      [
+        "complete"
+      ]
+    ],
+    "logs": []
+  },
+  {
+    "name": "property_add_fails_set_succeeds",
+    "input": {
+      "name": "property_add_fails_set_succeeds",
+      "profiles": [
+        "Basic",
+        "Basic"
+      ],
+      "codes": [
+        1,
+        0,
+        1,
+        0,
+        7
+      ]
+    },
+    "result": "Configured Terminal.app settings:\n- Enabled \"Use Option as Meta key\"\n- Switched to visual bell\nOption+Enter will now enter a newline.\nYou must restart Terminal.app for changes to take effect. dark\n",
+    "events": [
+      [
+        "backup"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "read",
+          "com.apple.Terminal",
+          "Default Window Settings"
+        ]
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "read",
+          "com.apple.Terminal",
+          "Startup Window Settings"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Add :'Window Settings':'Basic':useOptionAsMetaKey bool true",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Set :'Window Settings':'Basic':useOptionAsMetaKey true",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Add :'Window Settings':'Basic':Bell bool false",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Set :'Window Settings':'Basic':Bell false",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "killall",
+        [
+          "cfprefsd"
+        ]
+      ],
+      [
+        "complete"
+      ]
+    ],
+    "logs": []
+  },
+  {
+    "name": "one_property_success_enough",
+    "input": {
+      "name": "one_property_success_enough",
+      "profiles": [
+        "Basic",
+        "Basic"
+      ],
+      "codes": [
+        1,
+        2,
+        0,
+        0
+      ]
+    },
+    "result": "Configured Terminal.app settings:\n- Enabled \"Use Option as Meta key\"\n- Switched to visual bell\nOption+Enter will now enter a newline.\nYou must restart Terminal.app for changes to take effect. dark\n",
+    "events": [
+      [
+        "backup"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "read",
+          "com.apple.Terminal",
+          "Default Window Settings"
+        ]
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "read",
+          "com.apple.Terminal",
+          "Startup Window Settings"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Add :'Window Settings':'Basic':useOptionAsMetaKey bool true",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Set :'Window Settings':'Basic':useOptionAsMetaKey true",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Add :'Window Settings':'Basic':Bell bool false",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "killall",
+        [
+          "cfprefsd"
+        ]
+      ],
+      [
+        "complete"
+      ]
+    ],
+    "logs": [
+      "Error: Failed to enable Option as Meta key for Terminal.app profile: Basic"
+    ]
+  },
+  {
+    "name": "both_properties_failed_restore",
+    "input": {
+      "name": "both_properties_failed_restore",
+      "profiles": [
+        "Basic",
+        "Basic"
+      ],
+      "codes": [
+        1,
+        2,
+        1,
+        2
+      ],
+      "restore": {
+        "status": "restored"
+      }
+    },
+    "result": {
+      "thrown": "Failed to enable Option as Meta key for Terminal.app. Your settings have been restored from backup."
+    },
+    "events": [
+      [
+        "backup"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "read",
+          "com.apple.Terminal",
+          "Default Window Settings"
+        ]
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "read",
+          "com.apple.Terminal",
+          "Startup Window Settings"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Add :'Window Settings':'Basic':useOptionAsMetaKey bool true",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Set :'Window Settings':'Basic':useOptionAsMetaKey true",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Add :'Window Settings':'Basic':Bell bool false",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "exec",
+        "/usr/libexec/PlistBuddy",
+        [
+          "-c",
+          "Set :'Window Settings':'Basic':Bell false",
+          "/oracle/Terminal.plist"
+        ]
+      ],
+      [
+        "restore"
+      ]
+    ],
+    "logs": [
+      "Error: Failed to enable Option as Meta key for Terminal.app profile: Basic",
+      "Error: Failed to disable audio bell for Terminal.app profile: Basic",
+      "Error: Failed to enable Option as Meta key or disable audio bell for any Terminal.app profile"
+    ]
+  },
+  {
+    "name": "backup_failed_no_backup",
+    "input": {
+      "name": "backup_failed_no_backup",
+      "backup": false,
+      "restore": {
+        "status": "no_backup"
+      }
+    },
+    "result": {
+      "thrown": "Failed to enable Option as Meta key for Terminal.app. No backup was available to restore from."
+    },
+    "events": [
+      [
+        "backup"
+      ],
+      [
+        "restore"
+      ]
+    ],
+    "logs": [
+      "Error: Failed to create backup of Terminal.app preferences, bailing out"
+    ]
+  },
+  {
+    "name": "default_read_failed",
+    "input": {
+      "name": "default_read_failed",
+      "profiles": [
+        "Basic",
+        "Basic"
+      ],
+      "readCodes": [
+        2
+      ],
+      "restore": {
+        "status": "failed",
+        "backupPath": "/oracle/backup"
+      }
+    },
+    "result": {
+      "thrown": "Failed to enable Option as Meta key for Terminal.app. Restoring from backup failed, try manually with: defaults import com.apple.Terminal /oracle/backup"
+    },
+    "events": [
+      [
+        "backup"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "read",
+          "com.apple.Terminal",
+          "Default Window Settings"
+        ]
+      ],
+      [
+        "restore"
+      ]
+    ],
+    "logs": [
+      "Error: Failed to read default Terminal.app profile"
+    ]
+  },
+  {
+    "name": "startup_blank",
+    "input": {
+      "name": "startup_blank",
+      "profiles": [
+        "Basic",
+        "  "
+      ],
+      "restore": {
+        "status": "restored"
+      }
+    },
+    "result": {
+      "thrown": "Failed to enable Option as Meta key for Terminal.app. Your settings have been restored from backup."
+    },
+    "events": [
+      [
+        "backup"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "read",
+          "com.apple.Terminal",
+          "Default Window Settings"
+        ]
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "read",
+          "com.apple.Terminal",
+          "Startup Window Settings"
+        ]
+      ],
+      [
+        "restore"
+      ]
+    ],
+    "logs": [
+      "Error: Failed to read startup Terminal.app profile"
+    ]
+  }
+]

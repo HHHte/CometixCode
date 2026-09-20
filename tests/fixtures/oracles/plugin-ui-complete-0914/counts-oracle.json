@@ -1,0 +1,52 @@
+[
+  {
+    "value": null,
+    "text": "0"
+  },
+  {
+    "value": 0,
+    "text": "0"
+  },
+  {
+    "value": 999,
+    "text": "999"
+  },
+  {
+    "value": 1000,
+    "text": "1K"
+  },
+  {
+    "value": "001",
+    "text": "001"
+  },
+  {
+    "value": "1500",
+    "text": "1.5K"
+  },
+  {
+    "value": true,
+    "text": "true"
+  },
+  {
+    "value": false,
+    "text": "false"
+  },
+  {
+    "value": [],
+    "text": ""
+  },
+  {
+    "value": [
+      5
+    ],
+    "text": "5"
+  },
+  {
+    "value": {},
+    "text": "NaNM"
+  },
+  {
+    "value": "bad",
+    "text": "NaNM"
+  }
+]

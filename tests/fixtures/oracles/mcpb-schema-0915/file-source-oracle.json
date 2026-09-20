@@ -1,0 +1,90 @@
+[
+  {
+    "name": "root-array",
+    "input": "[{\"command\":\"node\"}]",
+    "servers": {
+      "0": {
+        "command": "node",
+        "args": []
+      }
+    },
+    "logs": []
+  },
+  {
+    "name": "nested-array",
+    "input": "{\"mcpServers\":[{\"command\":\"node\"}]}",
+    "servers": {
+      "0": {
+        "command": "node",
+        "args": []
+      }
+    },
+    "logs": []
+  },
+  {
+    "name": "proto",
+    "input": "{\"__proto__\":{\"command\":\"proto\"},\"ok\":{\"command\":\"node\"}}",
+    "servers": {
+      "ok": {
+        "command": "node",
+        "args": []
+      }
+    },
+    "logs": []
+  },
+  {
+    "name": "null",
+    "input": "null",
+    "servers": null,
+    "logs": [
+      "Failed to load MCP servers from /plugin/.mcp.json: TypeError: null is not an object (evaluating 'parsed.mcpServers')"
+    ]
+  },
+  {
+    "name": "false",
+    "input": "false",
+    "servers": {},
+    "logs": []
+  },
+  {
+    "name": "zero",
+    "input": "0",
+    "servers": {},
+    "logs": []
+  },
+  {
+    "name": "text",
+    "input": "\"hi\"",
+    "servers": {},
+    "logs": [
+      "Invalid MCP server config for 0 in /plugin/.mcp.json: [\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ]\n    ],\n    \"path\": [],\n    \"message\": \"Invalid input\"\n  }\n]",
+      "Invalid MCP server config for 1 in /plugin/.mcp.json: [\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received string\"\n        }\n      ]\n    ],\n    \"path\": [],\n    \"message\": \"Invalid input\"\n  }\n]"
+    ]
+  },
+  {
+    "name": "null-mcp",
+    "input": "{\"mcpServers\":null,\"ok\":{\"command\":\"node\"}}",
+    "servers": {
+      "ok": {
+        "command": "node",
+        "args": []
+      }
+    },
+    "logs": [
+      "Invalid MCP server config for mcpServers in /plugin/.mcp.json: [\n  {\n    \"code\": \"invalid_union\",\n    \"errors\": [\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received null\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received null\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received null\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received null\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received null\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received null\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received null\"\n        }\n      ],\n      [\n        {\n          \"expected\": \"object\",\n          \"code\": \"invalid_type\",\n          \"path\": [],\n          \"message\": \"Invalid input: expected object, received null\"\n        }\n      ]\n    ],\n    \"path\": [],\n    \"message\": \"Invalid input\"\n  }\n]"
+    ]
+  },
+  {
+    "name": "utf8-replacement",
+    "input_hex": "7b2273223a7b22636f6d6d616e64223a226e6f6465222c2261726773223a5b22ff225d7d7d",
+    "servers": {
+      "s": {
+        "command": "node",
+        "args": [
+          "�"
+        ]
+      }
+    },
+    "logs": []
+  }
+]

@@ -1,0 +1,254 @@
+[
+  {
+    "title": "Plugins",
+    "selectedTab": "a",
+    "color": "professionalBlue",
+    "width": 28,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[38;2;106;155;204m\u001b[1mPlugins\u001b[48;2;106;155;204m\u001b[38;2;0;0;0m Discover \u001b[22m\u001b[39m\u001b[49m Installed\n\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[38;2;106;155;204m\u001b[1mPlugins\u001b[48;2;106;155;204m\u001b[38;2;0;0;0m Discover \u001b[22m\u001b[39m\u001b[49m Installed\n\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "Plugins",
+    "selectedTab": "a",
+    "color": "professionalBlue",
+    "width": 30,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[38;2;106;155;204m\u001b[1mPlugins\u001b[22m\u001b[39m \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[38;2;106;155;204m\u001b[1mPlugins\u001b[22m\u001b[39m \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "Plugins",
+    "selectedTab": "a",
+    "color": "professionalBlue",
+    "width": 60,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[38;2;106;155;204m\u001b[1mPlugins\u001b[22m\u001b[39m \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[38;2;106;155;204m\u001b[1mPlugins\u001b[22m\u001b[39m \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "Plugins",
+    "selectedTab": "a",
+    "color": null,
+    "width": 28,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[1mPlugins\u001b[7m Discover \u001b[27m\u001b[22m Installed\n\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[1mPlugins\u001b[7m Discover \u001b[27m\u001b[22m Installed\n\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "Plugins",
+    "selectedTab": "a",
+    "color": null,
+    "width": 30,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[1mPlugins\u001b[22m \u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[1mPlugins\u001b[22m \u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "Plugins",
+    "selectedTab": "a",
+    "color": null,
+    "width": 60,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[1mPlugins\u001b[22m \u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[1mPlugins\u001b[22m \u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "Plugins",
+    "selectedTab": "b",
+    "color": "professionalBlue",
+    "width": 28,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[38;2;106;155;204m\u001b[1mPlugins\u001b[22m\u001b[39m Discover \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[38;2;106;155;204m\u001b[1mPlugins\u001b[22m\u001b[39m Discover \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "Plugins",
+    "selectedTab": "b",
+    "color": "professionalBlue",
+    "width": 30,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[38;2;106;155;204m\u001b[1mPlugins\u001b[22m\u001b[39m  Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[38;2;106;155;204m\u001b[1mPlugins\u001b[22m\u001b[39m  Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "Plugins",
+    "selectedTab": "b",
+    "color": "professionalBlue",
+    "width": 60,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[38;2;106;155;204m\u001b[1mPlugins\u001b[22m\u001b[39m  Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[38;2;106;155;204m\u001b[1mPlugins\u001b[22m\u001b[39m  Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "Plugins",
+    "selectedTab": "b",
+    "color": null,
+    "width": 28,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[1mPlugins\u001b[22m Discover \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[1mPlugins\u001b[22m Discover \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "Plugins",
+    "selectedTab": "b",
+    "color": null,
+    "width": 30,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[1mPlugins\u001b[22m  Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[1mPlugins\u001b[22m  Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "Plugins",
+    "selectedTab": "b",
+    "color": null,
+    "width": 60,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[1mPlugins\u001b[22m  Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[1mPlugins\u001b[22m  Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "",
+    "selectedTab": "a",
+    "color": "professionalBlue",
+    "width": 28,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "",
+    "selectedTab": "a",
+    "color": "professionalBlue",
+    "width": 30,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "",
+    "selectedTab": "a",
+    "color": "professionalBlue",
+    "width": 60,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "",
+    "selectedTab": "a",
+    "color": null,
+    "width": 28,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h \u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h \u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "",
+    "selectedTab": "a",
+    "color": null,
+    "width": 30,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h \u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h \u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "",
+    "selectedTab": "a",
+    "color": null,
+    "width": 60,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h \u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h \u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "",
+    "selectedTab": "b",
+    "color": "professionalBlue",
+    "width": 28,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h  Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h  Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "",
+    "selectedTab": "b",
+    "color": "professionalBlue",
+    "width": 30,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h  Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h  Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "",
+    "selectedTab": "b",
+    "color": "professionalBlue",
+    "width": 60,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h  Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h  Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "",
+    "selectedTab": "b",
+    "color": null,
+    "width": 28,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h  Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h  Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "",
+    "selectedTab": "b",
+    "color": null,
+    "width": 30,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h  Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h  Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": "",
+    "selectedTab": "b",
+    "color": null,
+    "width": 60,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h  Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h  Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": null,
+    "selectedTab": "a",
+    "color": "professionalBlue",
+    "width": 28,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": null,
+    "selectedTab": "a",
+    "color": "professionalBlue",
+    "width": 30,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": null,
+    "selectedTab": "a",
+    "color": "professionalBlue",
+    "width": 60,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Discover \u001b[22m\u001b[39m\u001b[49m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": null,
+    "selectedTab": "a",
+    "color": null,
+    "width": 28,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": null,
+    "selectedTab": "a",
+    "color": null,
+    "width": 30,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": null,
+    "selectedTab": "a",
+    "color": null,
+    "width": 60,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h\u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h\u001b[1m\u001b[7m Discover \u001b[27m\u001b[22m  Installed\n\nbody A\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": null,
+    "selectedTab": "b",
+    "color": "professionalBlue",
+    "width": 28,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": null,
+    "selectedTab": "b",
+    "color": "professionalBlue",
+    "width": 30,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": null,
+    "selectedTab": "b",
+    "color": "professionalBlue",
+    "width": 60,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h Discover  \u001b[48;2;106;155;204m\u001b[38;2;0;0;0m\u001b[1m Installed \u001b[22m\u001b[39m\u001b[49m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": null,
+    "selectedTab": "b",
+    "color": null,
+    "width": 28,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": null,
+    "selectedTab": "b",
+    "color": null,
+    "width": 30,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  },
+  {
+    "title": null,
+    "selectedTab": "b",
+    "color": null,
+    "width": 60,
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026h Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026h Discover  \u001b[1m\u001b[7m Installed \u001b[27m\u001b[22m\n\nbody B\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l"
+  }
+]

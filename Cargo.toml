@@ -1,0 +1,184 @@
+[package]
+name = "cometix-code"
+version = "0.2.0"
+edition = "2024"
+rust-version = "1.87"
+description = "A terminal-based AI coding assistant — 1:1 TUI clone of Claude Code"
+license = "AGPL-3.0-only"
+
+# `src/main.rs` is CC `main.tsx` (library module), not the process entry.
+# Disable autodiscovery so Cargo does not treat it as a binary.
+autobins = false
+
+[lib]
+name = "cometix_code"
+path = "src/lib.rs"
+
+[[bin]]
+name = "cometix"
+path = "src/bin/cometix.rs"
+
+[features]
+default = ["mcp_runtime"]
+# L1 replacement for CC runtime `process.env.USER_TYPE === 'ant'` gates.
+# The default build is the external distribution; this feature compiles the
+# Anthropic-internal capability profile and cannot be enabled at runtime.
+anthropic_internal = []
+# Maps to CC build-time `feature('VOICE_MODE')` guard. Runtime voice streaming
+# remains unimplemented; this only enables UI/gate parity for read-only seams.
+voice_mode = []
+# Maps to CC build-time `feature('ULTRATHINK')` transcript highlighting.
+ultrathink = []
+# Maps to CC `@modelcontextprotocol/sdk` runtime client usage. The Rust
+# equivalent is the official `modelcontextprotocol/rust-sdk` crate (`rmcp`).
+mcp_runtime = [
+    "dep:rmcp",
+    "dep:http",
+    "dep:sse-stream",
+    "dep:tokio-tungstenite",
+]
+
+[dependencies]
+# Source strip-ansi import used by staticRender/exportRenderer.
+strip-ansi-escapes = "0.2.1"
+# Official rust_icu bindings; use the installed ICU through pkg-config.
+rust_icu_ubrk = "=5.8.0"
+rust_icu_uloc = "=5.8.0"
+rust_icu_sys = "=5.8.0"
+# iocraft fork carrying the CC Ink parity primitives (row-level diff, event
+# propagation, SIGCONT self-healing, IME cursor, bracketed paste, grid layout).
+iocraft = { git = "https://github.com/Haleclipse/CometixTUI", features = ["unstable-output-streams"] }
+# Rust port of chalk, a member of the same workspace as the iocraft fork; owns
+# color-level detection and string styling, matching the source's chalk import.
+chalk = { git = "https://github.com/Haleclipse/CometixTUI" }
+
+# Rust port of @anthropic-ai/sdk.
+anthropic-sdk = { git = "https://github.com/Haleclipse/anthropic-sdk-rs" }
+
+# Async runtime: tokio for API/network/process I/O. iocraft's render loop is
+# runtime-agnostic (futures traits only); tokio drives it from main().
+tokio = { version = "1", features = ["full"] }
+futures = "0.3"
+# Runtime-agnostic timer — same crate iocraft uses internally.
+# Replaces smol::Timer in use_future hooks without binding to any runtime.
+futures-timer = "3"
+# Runtime-agnostic async channel — replaces smol::channel.
+async-channel = "2"
+
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+# ECMAScript-compatible JSON number formatting for NotebookEdit JSON.stringify parity.
+ryu-js = "1"
+serde_yaml = "0.9"
+# Draft 7 meta-schema/runtime validation for CC/Ajv-compatible StructuredOutput.
+# Remote/file resolution stays disabled: caller-provided schemas must be self-contained.
+jsonschema = { version = "0.45.1", default-features = false }
+
+chrono = { version = "0.4.45", features = ["serde"] }
+
+uuid = { version = "1", features = ["v4"] }
+getrandom = "0.3.4"
+
+unicode-width = "0.2"
+unicode-segmentation = "1.12"
+unicode-normalization = "0.1"
+# CC Grep filename ordering uses JavaScript Intl/ICU `localeCompare`.
+icu_collator = "2.2.1"
+icu_locale = "2.2.0"
+sys-locale = "0.3.2"
+regex = "1.12.4"
+# zod's `z.string().url()` accepts what the WHATWG URL parser accepts.
+url = "2.5.8"
+# CC hook matchers use JavaScript `RegExp`, including lookarounds/backreferences
+# and non-`u` UTF-16 code-unit semantics.
+regress = { version = "0.11.1", features = ["utf16"] }
+# Gitignore-compatible conditional skill path matching (`ignore().add(...)`).
+ignore = "0.4.24"
+# picomatch-shaped `claudeMdExcludes` matching against absolute paths.
+globset = "0.4.18"
+indexmap = { version = "2.14.0", features = ["serde"] }
+# CC Bash security/permission parsing is tree-sitter-backed. Keep the grammar
+# native and deterministic rather than approximating shell syntax with regexes.
+tree-sitter = "0.25.10"
+tree-sitter-bash = "0.25.1"
+sha2 = "0.11.0"
+md5 = "0.8.0"
+base64 = "0.22.1"
+nucleo-matcher = "0.3.1"
+similar = "3.1.1"
+syntect = { version = "5.3", default-features = false, features = ["default-onig"] }
+bat = { version = "0.26.1", default-features = false }
+marked-rs = { git = "https://github.com/Haleclipse/marked-rs" }
+# WebFetch HTML-to-Markdown conversion. CC uses `turndown@7.2.2`; this Rust
+# port intentionally uses supermarkdown for native cross-platform conversion,
+# with divergences documented in `src/tools/web_fetch_tool/utils.rs`.
+supermarkdown = { version = "0.0.6", default-features = false }
+# Native counterpart of CC `utils/imageResizer.ts` for MCP/FileRead image blocks.
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "gif", "webp"] }
+
+anyhow = "1"
+libc = "0.2"
+http = { version = "1", optional = true }
+# TLS backend is target-specific (see [target.'cfg(...)'.dependencies] below).
+# Shared features only — do not put native-tls / rustls here or both platforms
+# get a feature union and native-tls always wins.
+flate2 = "1.1.9"
+reqwest = { version = "0.13", default-features = false, features = ["json", "stream"] }
+sse-stream = { version = "0.2", optional = true }
+tokio-tungstenite = { version = "0.30", default-features = false, features = ["connect"], optional = true }
+
+tracing = "0.1"
+
+# Official Rust SDK for Model Context Protocol, matching CC's
+# `@modelcontextprotocol/sdk` dependency in `services/mcp/client.ts`.
+# TLS feature for rmcp's reqwest is selected per-target below.
+rmcp = { version = "2.1.0", default-features = false, optional = true, features = [
+    "auth",
+    "client",
+    "elicitation",
+    "transport-child-process",
+    "transport-streamable-http-client-reqwest",
+] }
+
+# ── Platform TLS backends ────────────────────────────────────────────────
+# Android/Termux: native-tls (OpenSSL). reqwest's rustls* features always
+# enable rustls-platform-verifier, which panics without JNI context.
+# Desktop: rustls-no-provider + ring (installed by utils/tls_provider.rs). Keep anthropic-sdk
+# on rustls-no-provider too — reqwest feature "rustls" would union aws-lc-sys.
+
+[target.'cfg(target_os = "android")'.dependencies]
+reqwest = { version = "0.13", default-features = false, features = ["json", "stream", "native-tls"] }
+tokio-tungstenite = { version = "0.30", default-features = false, features = ["connect", "native-tls"], optional = true }
+rmcp = { version = "2.1.0", default-features = false, optional = true, features = [
+    "auth",
+    "client",
+    "elicitation",
+    "reqwest-native-tls",
+    "transport-child-process",
+    "transport-streamable-http-client-reqwest",
+] }
+
+[target.'cfg(not(target_os = "android"))'.dependencies]
+reqwest = { version = "0.13", default-features = false, features = ["json", "stream", "rustls-no-provider"] }
+tokio-tungstenite = { version = "0.30", default-features = false, features = ["connect", "rustls-tls-webpki-roots"], optional = true }
+rmcp = { version = "2.1.0", default-features = false, optional = true, features = [
+    "auth",
+    "client",
+    "elicitation",
+    "reqwest-tls-no-provider",
+    "transport-child-process",
+    "transport-streamable-http-client-reqwest",
+] }
+# ring crypto provider for rustls — tls_provider installs it before HTTPS.
+rustls = { version = "0.23", default-features = false, features = ["ring", "logging", "std", "tls12"] }
+
+[dev-dependencies]
+pretty_assertions = "1"
+tokio = { version = "1", features = ["test-util"] }
+
+[profile.release]
+lto = "thin"
+codegen-units = 16
+strip = true
+opt-level = "s"
+panic = "abort"

@@ -1,0 +1,56 @@
+{
+  "provenance": "Actual CC 2.1.88 refresh.ts function bodies selected by AST, mocked dependency boundaries; no Rust or configuration side effects.",
+  "events": [
+    "debug:refreshActivePlugins: clearing all plugin caches",
+    "clear-all",
+    "clear-exclusions",
+    "full:start",
+    "commands:start",
+    "agents:start",
+    "start:mcp:p1",
+    "start:mcp:p2",
+    "start:lsp:p1",
+    "start:lsp:p2",
+    "complete:mcp:p2",
+    "complete:lsp:p1",
+    "complete:mcp:p1",
+    "complete:lsp:p2",
+    "state:key=8",
+    "lsp:reinitialize",
+    "hooks:start",
+    "log-error:hook failure",
+    "debug:refreshActivePlugins: loadPluginHooks failed: hook failure",
+    "debug:refreshActivePlugins: 3 enabled, 1 commands, 2 agents, 3 hooks, 3 MCP, 1 LSP"
+  ],
+  "earlyCache": {
+    "p2McpKeys": [
+      "first",
+      "second"
+    ],
+    "p1McpAbsent": true,
+    "sharedErrorCount": 2
+  },
+  "counts": {
+    "enabled_count": 3,
+    "disabled_count": 1,
+    "command_count": 1,
+    "agent_count": 2,
+    "hook_count": 3,
+    "mcp_count": 3,
+    "lsp_count": 1,
+    "error_count": 6
+  },
+  "errorKeys": [
+    "generic-error:lsp-manager:preserved",
+    "generic-error:plugin:p1:old-distinct",
+    "generic-error:load:initial",
+    "generic-error:plugin:p2:mcp-error",
+    "generic-error:plugin:p1:lsp-error",
+    "generic-error:plugin:p1:mcp-error",
+    "generic-error:plugin:p2:lsp-error"
+  ],
+  "pluginReconnectKey": 8,
+  "needsRefresh": false,
+  "cachedEmptyObjectsSkipped": true,
+  "duplicateFreshErrorsPreserved": 2
+}

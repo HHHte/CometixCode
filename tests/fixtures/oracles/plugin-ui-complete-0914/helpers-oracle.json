@@ -1,0 +1,71 @@
+{
+  "menus": [
+    [
+      {
+        "label": "Install for you (user scope)",
+        "action": "install-user"
+      },
+      {
+        "label": "Install for all collaborators on this repository (project scope)",
+        "action": "install-project"
+      },
+      {
+        "label": "Install for you, in this repo only (local scope)",
+        "action": "install-local"
+      },
+      {
+        "label": "Back to plugin list",
+        "action": "back"
+      }
+    ],
+    [
+      {
+        "label": "Install for you (user scope)",
+        "action": "install-user"
+      },
+      {
+        "label": "Install for all collaborators on this repository (project scope)",
+        "action": "install-project"
+      },
+      {
+        "label": "Install for you, in this repo only (local scope)",
+        "action": "install-local"
+      },
+      {
+        "label": "Back to plugin list",
+        "action": "back"
+      }
+    ],
+    [
+      {
+        "label": "Install for you (user scope)",
+        "action": "install-user"
+      },
+      {
+        "label": "Install for all collaborators on this repository (project scope)",
+        "action": "install-project"
+      },
+      {
+        "label": "Install for you, in this repo only (local scope)",
+        "action": "install-local"
+      },
+      {
+        "label": "Open homepage",
+        "action": "homepage"
+      },
+      {
+        "label": "View on GitHub",
+        "action": "github"
+      },
+      {
+        "label": "Back to plugin list",
+        "action": "back"
+      }
+    ]
+  ],
+  "repos": [
+    null,
+    "org/repo",
+    null
+  ]
+}

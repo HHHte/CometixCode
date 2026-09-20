@@ -1,0 +1,186 @@
+{
+  "cases": [
+    {
+      "name": "local missing",
+      "answer": {
+        "ok": false,
+        "reason": "local-source-no-location",
+        "pluginName": "p"
+      },
+      "events": []
+    },
+    {
+      "name": "local null",
+      "answer": {
+        "ok": false,
+        "reason": "local-source-no-location",
+        "pluginName": "p"
+      },
+      "events": []
+    },
+    {
+      "name": "local false",
+      "answer": {
+        "ok": false,
+        "reason": "local-source-no-location",
+        "pluginName": "p"
+      },
+      "events": []
+    },
+    {
+      "name": "local malformed",
+      "answer": {
+        "throw": "The \"paths[0]\" property must be of type string, got number"
+      },
+      "events": [
+        [
+          "settings",
+          {
+            "enabledPlugins": {
+              "existing": false,
+              "p@m": true
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "external no location",
+      "answer": {
+        "ok": true,
+        "closure": [
+          "p@m"
+        ],
+        "depNote": ""
+      },
+      "events": [
+        [
+          "settings",
+          {
+            "enabledPlugins": {
+              "existing": false,
+              "p@m": true
+            }
+          }
+        ],
+        [
+          "clear"
+        ]
+      ]
+    },
+    {
+      "name": "string without dot prefix",
+      "answer": {
+        "ok": true,
+        "closure": [
+          "p@m"
+        ],
+        "depNote": ""
+      },
+      "events": [
+        [
+          "settings",
+          {
+            "enabledPlugins": {
+              "existing": false,
+              "p@m": true
+            }
+          }
+        ],
+        [
+          "clear"
+        ]
+      ]
+    },
+    {
+      "name": "dependency bad location",
+      "answer": {
+        "throw": "The \"paths[0]\" property must be of type string, got object"
+      },
+      "events": [
+        [
+          "settings",
+          {
+            "enabledPlugins": {
+              "existing": false,
+              "dep@m": true,
+              "p@m": true
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "local success",
+      "answer": {
+        "ok": true,
+        "closure": [
+          "p@m"
+        ],
+        "depNote": ""
+      },
+      "events": [
+        [
+          "settings",
+          {
+            "enabledPlugins": {
+              "existing": false,
+              "p@m": true
+            }
+          }
+        ],
+        [
+          "cache",
+          "p@m",
+          {
+            "name": "p",
+            "source": "./p"
+          },
+          "user",
+          null,
+          "/market/p"
+        ],
+        [
+          "clear"
+        ]
+      ]
+    }
+  ],
+  "paths": [
+    {
+      "base": "/",
+      "path": "./p",
+      "error": "Path traversal detected: \"./p\" would escape the base directory"
+    },
+    {
+      "base": "/",
+      "path": "/",
+      "value": "/"
+    },
+    {
+      "base": "/base",
+      "path": "./p",
+      "value": "/base/p"
+    },
+    {
+      "base": "/base",
+      "path": "../base2",
+      "error": "Path traversal detected: \"../base2\" would escape the base directory"
+    },
+    {
+      "base": "/base",
+      "path": "./a/../p",
+      "value": "/base/p"
+    }
+  ],
+  "operations": [
+    {
+      "success": false,
+      "message": "Plugin \"missing\" not found in any configured marketplace"
+    },
+    {
+      "success": false,
+      "message": "Plugin \"missing\" not found in marketplace \"market\""
+    }
+  ]
+}

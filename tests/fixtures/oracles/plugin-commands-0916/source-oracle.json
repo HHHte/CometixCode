@@ -1,0 +1,53 @@
+{
+  "naming": [
+    {
+      "file": "/p/commands/foo/bar.md",
+      "base": "/p/commands",
+      "name": "p:foo:bar"
+    },
+    {
+      "file": "/p/commands/foo/SKILL.md",
+      "base": "/p/commands",
+      "name": "p:foo"
+    },
+    {
+      "file": "/p/commands/UP.MD",
+      "base": "/p/commands",
+      "name": "p:UP.MD"
+    },
+    {
+      "file": "/p/commands-more/a.md",
+      "base": "/p/commands",
+      "name": "p:-more:a"
+    }
+  ],
+  "commandPrompt": [
+    {
+      "type": "text",
+      "text": "/p second ${CLAUDE_SKILL_DIR} S2 😀"
+    }
+  ],
+  "skillPrompt": [
+    {
+      "type": "text",
+      "text": "Base directory for this skill: /p/skills/leaf\n\n/p second /p/skills/leaf S2 😀"
+    }
+  ],
+  "commandEvents": [
+    "arguments",
+    "plugin",
+    "options",
+    "user",
+    "session",
+    "shell"
+  ],
+  "fields": {
+    "name": "p:leaf",
+    "displayName": "p:leaf",
+    "description": "Plugin skill",
+    "contentLength": 75,
+    "loadedFrom": "plugin",
+    "progressMessage": "loading",
+    "userInvocable": true
+  }
+}

@@ -1,0 +1,123 @@
+[
+  {
+    "name": "discover-list",
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026hLoading…\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n❯ ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[>0q\u001b[c",
+    "rendered": "\u001b[?2004h\u001b[?1004h\u001b[?2026hLoading…\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n❯ ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n❯ ◉ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ni to install · type to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n❯ ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n❯ ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l",
+    "events": [
+      [
+        "install",
+        {
+          "pluginId": "Alpha@market",
+          "entry": {
+            "name": "Alpha",
+            "source": {
+              "source": "github",
+              "repo": "example/alpha"
+            },
+            "description": "first plugin",
+            "homepage": "https://example.test",
+            "version": "1.2.3",
+            "author": {
+              "name": "Example"
+            }
+          },
+          "marketplaceName": "market",
+          "scope": "user"
+        }
+      ],
+      [
+        "clear"
+      ],
+      [
+        "result",
+        "✓ Installed 1 plugin. Run /reload-plugins to activate."
+      ],
+      [
+        "complete"
+      ],
+      [
+        "parent",
+        {
+          "type": "menu"
+        }
+      ]
+    ],
+    "searchFrames": []
+  },
+  {
+    "name": "discover-target",
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026hLoading…\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l\u001b[?2004h\u001b[?1004h\u001b[>0q\u001b[c\u001b[>0q\u001b[c\u001b[?2026hPlugin details\n\nAlpha\nfrom market\nVersion: 1.2.3\n\nfirst plugin\n\nBy: Example\n\n⚠Make sure you trust a plugin before installing, updating, or using it. Anthropic does not control\n what MCP servers, files, or other software are included in plugins and cannot verify that they will\n  work as intended or that they won't change. See each plugin's homepage for more information.\n\n> Install for you (user scope)\n  Install for all collaborators on this repository (project scope)\n  Install for you, in this repo only (local scope)\n  Open homepage\n  View on GitHub\n  Back to plugin list\n\nEnter to select · Esc to back\u001b[?2026l",
+    "rendered": "\u001b[?2004h\u001b[?1004h\u001b[?2026hLoading…\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l\u001b[?2004h\u001b[?1004h\u001b[>0q\u001b[c\u001b[>0q\u001b[c\u001b[?2026hPlugin details\n\nAlpha\nfrom market\nVersion: 1.2.3\n\nfirst plugin\n\nBy: Example\n\n⚠Make sure you trust a plugin before installing, updating, or using it. Anthropic does not control\n what MCP servers, files, or other software are included in plugins and cannot verify that they will\n  work as intended or that they won't change. See each plugin's homepage for more information.\n\n> Install for you (user scope)\n  Install for all collaborators on this repository (project scope)\n  Install for you, in this repo only (local scope)\n  Open homepage\n  View on GitHub\n  Back to plugin list\n\nEnter to select · Esc to back\u001b[?2026l\u001b[?2026hPlugin details\n\nAlpha\nfrom market\nVersion: 1.2.3\n\nfirst plugin\n\nBy: Example\n\n⚠Make sure you trust a plugin before installing, updating, or using it. Anthropic does not control\n what MCP servers, files, or other software are included in plugins and cannot verify that they will\n  work as intended or that they won't change. See each plugin's homepage for more information.\n\n> Installing…\n  Installing…\n  Installing…\n  Open homepage\n  View on GitHub\n  Back to plugin list\n\nEnter to select · Esc to back\u001b[?2026l\u001b[?2026hPlugin details\n\nAlpha\nfrom market\nVersion: 1.2.3\n\nfirst plugin\n\nBy: Example\n\n⚠Make sure you trust a plugin before installing, updating, or using it. Anthropic does not control\n what MCP servers, files, or other software are included in plugins and cannot verify that they will\n  work as intended or that they won't change. See each plugin's homepage for more information.\n\n> Installing…\n  Installing…\n  Installing…\n  Open homepage\n  View on GitHub\n  Back to plugin list\n\nEnter to select · Esc to back\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l",
+    "events": [
+      [
+        "install",
+        {
+          "pluginId": "Alpha@market",
+          "entry": {
+            "name": "Alpha",
+            "source": {
+              "source": "github",
+              "repo": "example/alpha"
+            },
+            "description": "first plugin",
+            "homepage": "https://example.test",
+            "version": "1.2.3",
+            "author": {
+              "name": "Example"
+            }
+          },
+          "marketplaceName": "market",
+          "scope": "user"
+        }
+      ],
+      [
+        "result",
+        "Installed fixture"
+      ],
+      [
+        "complete"
+      ],
+      [
+        "parent",
+        {
+          "type": "menu"
+        }
+      ]
+    ],
+    "searchFrames": []
+  },
+  {
+    "name": "browse-details",
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026hLoading…\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026hPlugin Details\n\nAlpha\nVersion: 1.2.3\n\nfirst plugin\n\nBy: Example\n\nWill install:\n· Component summary not available for remote plugin\n\n⚠Make sure you trust a plugin before installing, updating, or using it. Anthropic does not control\n what MCP servers, files, or other software are included in plugins and cannot verify that they will\n  work as intended or that they won't change. See each plugin's homepage for more information.\n\n> Install for you (user scope)\n  Install for all collaborators on this repository (project scope)\n  Install for you, in this repo only (local scope)\n  Open homepage\n  View on GitHub\n  Back to plugin list\n\n Enter to select · Esc to back\u001b[?2026l",
+    "rendered": "\u001b[?2004h\u001b[?1004h\u001b[?2026hLoading…\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026hPlugin Details\n\nAlpha\nVersion: 1.2.3\n\nfirst plugin\n\nBy: Example\n\nWill install:\n· Component summary not available for remote plugin\n\n⚠Make sure you trust a plugin before installing, updating, or using it. Anthropic does not control\n what MCP servers, files, or other software are included in plugins and cannot verify that they will\n  work as intended or that they won't change. See each plugin's homepage for more information.\n\n> Install for you (user scope)\n  Install for all collaborators on this repository (project scope)\n  Install for you, in this repo only (local scope)\n  Open homepage\n  View on GitHub\n  Back to plugin list\n\n Enter to select · Esc to back\u001b[?2026l\u001b[?2026hPlugin Details\n\nAlpha\nVersion: 1.2.3\n\nfirst plugin\n\nBy: Example\n\nWill install:\n· Component summary not available for remote plugin\n\n⚠Make sure you trust a plugin before installing, updating, or using it. Anthropic does not control\n what MCP servers, files, or other software are included in plugins and cannot verify that they will\n  work as intended or that they won't change. See each plugin's homepage for more information.\n\n> Install for you (user scope)\n  Install for all collaborators on this repository (project scope)\n  Install for you, in this repo only (local scope)\n  Open homepage\n  View on GitHub\n  Back to plugin list\n\n Enter to select · Esc to back\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l",
+    "events": [],
+    "searchFrames": []
+  },
+  {
+    "name": "discover-empty",
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026hLoading…\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026hDiscover plugins\n\nNo plugins available.\nAdd a marketplace first using the Marketplaces tab.\n\nEsc to go back\u001b[?2026l",
+    "rendered": "\u001b[?2004h\u001b[?1004h\u001b[?2026hLoading…\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026hDiscover plugins\n\nNo plugins available.\nAdd a marketplace first using the Marketplaces tab.\n\nEsc to go back\u001b[?2026l\u001b[?2026hDiscover plugins\n\nNo plugins available.\nAdd a marketplace first using the Marketplaces tab.\n\nEsc to go back\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l",
+    "events": [],
+    "searchFrames": []
+  },
+  {
+    "name": "discover-search",
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026hLoading…\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n❯ ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l",
+    "rendered": "\u001b[?2004h\u001b[?1004h\u001b[?2026hLoading…\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n❯ ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ z                                                                                          │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n  ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n❯ ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n❯ ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026h\n\u001b[?2026l\u001b[>4m\u001b[<u\u001b[?1004l\u001b[?2004l",
+    "events": [
+      [
+        "search",
+        true
+      ],
+      [
+        "search",
+        false
+      ]
+    ],
+    "searchFrames": [
+      "\u001b[?2004h\u001b[?1004h\u001b[?2026hLoading…\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n❯ ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ z                                                                                          │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l",
+      "\u001b[?2004h\u001b[?1004h\u001b[?2026hLoading…\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n❯ ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ z                                                                                          │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n  ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l",
+      "\u001b[?2004h\u001b[?1004h\u001b[?2026hLoading…\u001b[?2026l\u001b[>0q\u001b[c\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n❯ ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ z                                                                                          │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n  ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l\u001b[?2026hDiscover plugins\n╭──────────────────────────────────────────────────────────────────────────────────────────────╮\n│ ⌕ Search…                                                                                    │\n╰──────────────────────────────────────────────────────────────────────────────────────────────╯\n\n❯ ◯ Alpha · market\n    first plugin\n\n  ◯ Zulu · market\n    last plugin\n\ntype to search · Space to toggle · Enter to details · Esc to back\u001b[?2026l"
+    ]
+  }
+]

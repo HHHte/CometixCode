@@ -1,0 +1,113 @@
+[
+  {
+    "case": "dirs",
+    "options": {
+      "homedir": "/a/../b",
+      "platform": "macos",
+      "env": {}
+    },
+    "result": {
+      "HOME": "/a/../b",
+      "DESKTOP": "/b/Desktop",
+      "DOCUMENTS": "/b/Documents",
+      "DOWNLOADS": "/b/Downloads"
+    }
+  },
+  {
+    "case": "dirs",
+    "options": {
+      "homedir": "",
+      "platform": "linux",
+      "env": {
+        "XDG_DESKTOP_DIR": "/literal/../xdg"
+      }
+    },
+    "result": {
+      "HOME": "",
+      "DESKTOP": "/literal/../xdg",
+      "DOCUMENTS": "Documents",
+      "DOWNLOADS": "Downloads"
+    }
+  },
+  {
+    "case": "dirs",
+    "options": {
+      "homedir": "/home",
+      "platform": "windows",
+      "env": {
+        "USERPROFILE": "/users/../me"
+      }
+    },
+    "result": {
+      "HOME": "/home",
+      "DESKTOP": "/me/Desktop",
+      "DOCUMENTS": "/me/Documents",
+      "DOWNLOADS": "/me/Downloads"
+    }
+  },
+  {
+    "case": "dirs",
+    "options": {
+      "homedir": "/a/../b",
+      "platform": "unknown",
+      "env": {}
+    },
+    "result": {
+      "HOME": "/a/../b",
+      "DESKTOP": "/b/Desktop",
+      "DOCUMENTS": "/b/Documents",
+      "DOWNLOADS": "/b/Downloads"
+    }
+  },
+  {
+    "case": "cache-missing",
+    "changed": true
+  },
+  {
+    "case": "source-missing",
+    "changed": true,
+    "logs": [
+      [
+        "debug",
+        "MCPB source file missing: /var/folders/n6/0z8dmyj159v7m9sbkj_75qp40000gn/T/mcpb-original-PnSq4L/bundle.mcpb",
+        null
+      ]
+    ]
+  },
+  {
+    "case": "unchanged",
+    "changed": false
+  },
+  {
+    "case": "missing-unused-metadata",
+    "changed": false
+  },
+  {
+    "case": "arbitrary-unused-metadata",
+    "changed": false
+  },
+  {
+    "case": "modified",
+    "changed": true,
+    "logs": [
+      [
+        "debug",
+        "MCPB file modified: Mon Sep 14 2026 23:28:55 GMT+0800 (China Standard Time) > Sat Jan 01 2000 08:00:00 GMT+0800 (China Standard Time)",
+        null
+      ]
+    ]
+  },
+  {
+    "case": "extract",
+    "progress": [
+      "Extracting files...",
+      "Extraction complete (3 files)"
+    ],
+    "text": "A�"
+  },
+  {
+    "case": "join-absolute",
+    "result": "/b/.mcpb-cache",
+    "local": "/var/folders/n6/0z8dmyj159v7m9sbkj_75qp40000gn/T/mcpb-original-PnSq4L/bundle.mcpb"
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "cachedKeys": [
+    "plugin:demo:cached"
+  ],
+  "emptyKeys": [],
+  "disabledAbsent": true,
+  "extractedKeys": [
+    "plugin:demo:fresh"
+  ],
+  "rawCache": {
+    "fresh": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/bin",
+      "args": []
+    }
+  },
+  "rawCachedCommand": "${CLAUDE_PLUGIN_ROOT}/bin",
+  "activationCommand": "<ROOT>/bin",
+  "errors": []
+}

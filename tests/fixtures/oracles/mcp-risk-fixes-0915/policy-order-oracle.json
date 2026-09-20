@@ -1,0 +1,11 @@
+{
+  "allowed": [
+    "stdioOk",
+    "remoteOk",
+    "sdkDeniedByNameButExempt"
+  ],
+  "blocked": [
+    "stdioDenied",
+    "remoteDenied"
+  ]
+}

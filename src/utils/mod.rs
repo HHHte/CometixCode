@@ -1,0 +1,238 @@
+//! # utils/
+
+pub mod advisor;
+pub mod agent_context;
+pub mod agent_id;
+pub mod agent_swarms_enabled;
+pub mod analyze_context;
+pub mod api;
+pub mod apple_terminal_backup;
+pub mod argument_substitution;
+pub mod asciicast;
+pub mod attachments;
+pub mod attribution;
+pub mod auth;
+pub mod auth_file_descriptor;
+pub mod auto_mode_denials;
+pub mod auto_updater;
+pub mod aws_auth_status_manager;
+pub mod background;
+pub mod bash;
+pub mod betas;
+pub mod browser;
+pub mod buffered_writer;
+pub mod build_profile;
+pub mod cache_paths;
+pub mod classifier_approvals;
+pub mod classifier_approvals_hook;
+pub mod claude_code_hints;
+pub mod claude_in_chrome;
+pub mod claudemd;
+pub mod cleanup_registry;
+pub mod cli_args;
+pub mod cli_highlight;
+pub mod collapse_read_search;
+pub mod commit_attribution;
+pub mod concurrent_sessions;
+pub mod config;
+pub mod content_array;
+pub mod context;
+pub mod context_suggestions;
+pub mod conversation;
+pub mod conversation_recovery;
+pub mod cron;
+pub mod cron_scheduler;
+pub mod cron_tasks;
+pub mod cron_tasks_lock;
+pub mod cross_project_resume;
+pub mod cursor;
+pub mod debug;
+pub mod debug_filter;
+pub mod diff;
+pub mod display_tags;
+pub mod doctor_context_warnings;
+pub mod doctor_diagnostic;
+pub mod effort;
+pub mod embedded_tools;
+pub mod env;
+pub mod env_utils;
+pub mod env_validation;
+pub mod error_log_sink;
+pub mod errors;
+pub mod example_commands;
+pub mod exec_file_no_throw;
+pub mod extra_usage;
+pub mod fast_mode;
+pub mod feature_flags;
+pub mod file;
+pub mod file_history;
+pub mod file_persistence;
+pub mod file_read;
+pub mod file_state_cache;
+pub mod fingerprint;
+pub mod forked_agent;
+pub mod format;
+pub mod format_brief_timestamp;
+pub mod frontmatter_parser;
+pub mod fs_operations;
+pub mod fullscreen;
+pub mod fuse;
+pub mod get_worktree_paths;
+pub mod git;
+pub mod git_diff;
+pub mod git_settings;
+pub mod glob;
+pub mod handle_prompt_submit;
+pub mod hash;
+pub mod heatmap;
+pub mod hooks;
+pub mod http;
+pub mod hyperlink;
+pub mod ide;
+pub mod image_paste;
+pub mod image_resizer;
+pub mod image_store;
+pub mod immediate_command;
+pub mod intl;
+pub mod iocraft_color;
+pub mod json;
+pub mod kill_ring;
+pub mod local_installer;
+pub mod log;
+pub mod logo_v2_utils;
+pub mod managed_env;
+pub mod markdown_config_loader;
+pub mod mcp;
+pub mod mcp_instructions_delta;
+pub mod mcp_output_storage;
+pub mod mcp_validation;
+pub mod mcp_websocket_transport;
+pub mod memoize;
+pub mod memory_file_detection;
+pub mod message_queue_manager;
+pub mod messages;
+pub mod model;
+pub mod model_cost;
+pub mod native_installer;
+pub mod notebook;
+pub mod path;
+pub mod pdf;
+pub mod pdf_utils;
+pub mod peer_address;
+pub mod permissions;
+pub mod plan_mode_v2;
+pub mod plans;
+pub mod plugins;
+pub mod powershell;
+pub mod preflight_checks;
+pub mod privacy_level;
+pub mod process_env;
+pub mod process_runtime;
+pub mod process_user_input;
+pub mod prompt_category;
+pub mod prompt_editor;
+pub mod prompt_history;
+pub mod prompt_shell_execution;
+pub mod query_helpers;
+pub mod queue_processor;
+pub mod read_edit_context;
+pub mod read_file_in_range;
+pub mod release_notes;
+pub mod ripgrep;
+pub mod sandbox;
+pub mod secure_storage;
+pub mod semantic_boolean;
+pub mod semantic_number;
+pub mod session_env_vars;
+pub mod session_environment;
+pub mod session_ingress_auth;
+pub mod session_restore;
+pub mod session_start;
+pub mod session_state;
+pub mod session_storage;
+pub mod session_title;
+pub mod settings;
+pub mod shell;
+pub mod shell_command;
+pub mod side_query;
+pub mod side_question;
+pub mod sinks;
+pub mod slash_command_parsing;
+pub mod slow_operations;
+pub mod stats;
+pub mod stats_cache;
+pub mod status;
+pub mod status_notice_definitions;
+pub mod status_notice_helpers;
+pub mod string_utils;
+pub mod subprocess_env;
+pub mod suggestions;
+pub mod swarm;
+pub mod system_prompt;
+pub mod system_prompt_type;
+pub mod task;
+pub mod tasks;
+#[cfg(feature = "anthropic_internal")]
+pub mod team_memory_ops;
+pub mod teammate;
+pub mod teammate_context;
+pub mod teammate_mailbox;
+pub mod teleport;
+pub mod terminal;
+pub mod terminal_notification;
+pub mod theme;
+pub mod thinking;
+pub mod timeouts;
+pub mod tls_provider;
+pub mod todo;
+pub mod token_budget;
+pub mod tokens;
+pub mod tool_errors;
+pub mod tool_pool;
+pub mod tool_result_storage;
+pub mod tool_schema_cache;
+pub mod tool_search;
+pub mod treeify;
+pub mod truncate;
+pub mod ultracode;
+pub mod user_agent;
+pub mod which;
+pub mod windows_paths;
+pub mod words;
+pub mod workflows;
+pub mod workload_context;
+pub mod worktree;
+pub mod xdg;
+pub mod xml;
+pub mod yaml;
+pub mod zod;
+pub mod zod_to_json_schema;
+// wrapping.rs belonged to the pre-iocraft text stack — archived until current
+// iocraft text primitives need a dedicated wrapping adapter.
+// pub mod wrapping;
+
+/// Race two futures, returning the output of whichever completes first.
+/// Drop-in replacement for `smol::future::or` — same semantics.
+pub async fn race<T>(
+    a: impl std::future::Future<Output = T>,
+    b: impl std::future::Future<Output = T>,
+) -> T {
+    use std::pin::pin;
+    let a = pin!(a);
+    let b = pin!(b);
+    match futures::future::select(a, b).await {
+        futures::future::Either::Left((val, _)) => val,
+        futures::future::Either::Right((val, _)) => val,
+    }
+}
+
+pub mod query_context;
+
+pub mod export_renderer;
+pub mod static_render;
+
+pub mod dxt;
+
+pub mod telemetry;
+
+pub mod system_directories;

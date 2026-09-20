@@ -1,0 +1,634 @@
+[
+  {
+    "name": "backup_ok",
+    "input": {
+      "operation": "backup",
+      "config": {},
+      "codes": [
+        0,
+        0
+      ],
+      "statFails": false,
+      "saveFailures": 0
+    },
+    "result": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+    "config": {
+      "appleTerminalSetupInProgress": true,
+      "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+    },
+    "events": [
+      [
+        "exec",
+        "defaults",
+        [
+          "export",
+          "com.apple.Terminal",
+          "/oracle/Library/Preferences/com.apple.Terminal.plist"
+        ]
+      ],
+      [
+        "stat",
+        "/oracle/Library/Preferences/com.apple.Terminal.plist"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "export",
+          "com.apple.Terminal",
+          "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+        ]
+      ],
+      [
+        "save",
+        {
+          "appleTerminalSetupInProgress": true,
+          "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+        }
+      ]
+    ],
+    "logs": []
+  },
+  {
+    "name": "backup_initial_exit_failure",
+    "input": {
+      "operation": "backup",
+      "config": {},
+      "codes": [
+        1
+      ],
+      "statFails": false,
+      "saveFailures": 0
+    },
+    "result": null,
+    "config": {},
+    "events": [
+      [
+        "exec",
+        "defaults",
+        [
+          "export",
+          "com.apple.Terminal",
+          "/oracle/Library/Preferences/com.apple.Terminal.plist"
+        ]
+      ]
+    ],
+    "logs": []
+  },
+  {
+    "name": "backup_stat_failure",
+    "input": {
+      "operation": "backup",
+      "config": {},
+      "codes": [
+        0
+      ],
+      "statFails": true,
+      "saveFailures": 0
+    },
+    "result": null,
+    "config": {},
+    "events": [
+      [
+        "exec",
+        "defaults",
+        [
+          "export",
+          "com.apple.Terminal",
+          "/oracle/Library/Preferences/com.apple.Terminal.plist"
+        ]
+      ],
+      [
+        "stat",
+        "/oracle/Library/Preferences/com.apple.Terminal.plist"
+      ]
+    ],
+    "logs": []
+  },
+  {
+    "name": "backup_second_export_failure_ignored",
+    "input": {
+      "operation": "backup",
+      "config": {},
+      "codes": [
+        0,
+        7
+      ],
+      "statFails": false,
+      "saveFailures": 0
+    },
+    "result": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+    "config": {
+      "appleTerminalSetupInProgress": true,
+      "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+    },
+    "events": [
+      [
+        "exec",
+        "defaults",
+        [
+          "export",
+          "com.apple.Terminal",
+          "/oracle/Library/Preferences/com.apple.Terminal.plist"
+        ]
+      ],
+      [
+        "stat",
+        "/oracle/Library/Preferences/com.apple.Terminal.plist"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "export",
+          "com.apple.Terminal",
+          "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+        ]
+      ],
+      [
+        "save",
+        {
+          "appleTerminalSetupInProgress": true,
+          "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+        }
+      ]
+    ],
+    "logs": []
+  },
+  {
+    "name": "backup_mark_throws",
+    "input": {
+      "operation": "backup",
+      "config": {},
+      "codes": [
+        0,
+        0
+      ],
+      "statFails": false,
+      "saveFailures": 1
+    },
+    "result": null,
+    "config": {},
+    "events": [
+      [
+        "exec",
+        "defaults",
+        [
+          "export",
+          "com.apple.Terminal",
+          "/oracle/Library/Preferences/com.apple.Terminal.plist"
+        ]
+      ],
+      [
+        "stat",
+        "/oracle/Library/Preferences/com.apple.Terminal.plist"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "export",
+          "com.apple.Terminal",
+          "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+        ]
+      ],
+      [
+        "save",
+        {
+          "appleTerminalSetupInProgress": true,
+          "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+        }
+      ]
+    ],
+    "logs": [
+      "Error: save failed"
+    ]
+  },
+  {
+    "name": "restore_inactive",
+    "input": {
+      "operation": "restore",
+      "config": {
+        "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+      },
+      "codes": [],
+      "statFails": false,
+      "saveFailures": 0
+    },
+    "result": {
+      "status": "no_backup"
+    },
+    "config": {
+      "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+    },
+    "events": [],
+    "logs": []
+  },
+  {
+    "name": "restore_missing_path",
+    "input": {
+      "operation": "restore",
+      "config": {
+        "appleTerminalSetupInProgress": true
+      },
+      "codes": [],
+      "statFails": false,
+      "saveFailures": 0
+    },
+    "result": {
+      "status": "no_backup"
+    },
+    "config": {
+      "appleTerminalSetupInProgress": false
+    },
+    "events": [
+      [
+        "save",
+        {
+          "appleTerminalSetupInProgress": false
+        }
+      ]
+    ],
+    "logs": []
+  },
+  {
+    "name": "restore_empty_path",
+    "input": {
+      "operation": "restore",
+      "config": {
+        "appleTerminalSetupInProgress": true,
+        "appleTerminalBackupPath": ""
+      },
+      "codes": [],
+      "statFails": false,
+      "saveFailures": 0
+    },
+    "result": {
+      "status": "no_backup"
+    },
+    "config": {
+      "appleTerminalSetupInProgress": false,
+      "appleTerminalBackupPath": ""
+    },
+    "events": [
+      [
+        "save",
+        {
+          "appleTerminalSetupInProgress": false,
+          "appleTerminalBackupPath": ""
+        }
+      ]
+    ],
+    "logs": []
+  },
+  {
+    "name": "restore_stat_failure",
+    "input": {
+      "operation": "restore",
+      "config": {
+        "appleTerminalSetupInProgress": true,
+        "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+        "retained": "yes"
+      },
+      "codes": [],
+      "statFails": true,
+      "saveFailures": 0
+    },
+    "result": {
+      "status": "no_backup"
+    },
+    "config": {
+      "appleTerminalSetupInProgress": false,
+      "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+      "retained": "yes"
+    },
+    "events": [
+      [
+        "stat",
+        "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+      ],
+      [
+        "save",
+        {
+          "appleTerminalSetupInProgress": false,
+          "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+          "retained": "yes"
+        }
+      ]
+    ],
+    "logs": []
+  },
+  {
+    "name": "restore_import_failure_keeps_marker",
+    "input": {
+      "operation": "restore",
+      "config": {
+        "appleTerminalSetupInProgress": true,
+        "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+        "retained": "yes"
+      },
+      "codes": [
+        2
+      ],
+      "statFails": false,
+      "saveFailures": 0
+    },
+    "result": {
+      "status": "failed",
+      "backupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+    },
+    "config": {
+      "appleTerminalSetupInProgress": true,
+      "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+      "retained": "yes"
+    },
+    "events": [
+      [
+        "stat",
+        "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "import",
+          "com.apple.Terminal",
+          "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+        ]
+      ]
+    ],
+    "logs": []
+  },
+  {
+    "name": "restore_killall_failure_ignored",
+    "input": {
+      "operation": "restore",
+      "config": {
+        "appleTerminalSetupInProgress": true,
+        "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+        "retained": "yes"
+      },
+      "codes": [
+        0,
+        9
+      ],
+      "statFails": false,
+      "saveFailures": 0
+    },
+    "result": {
+      "status": "restored"
+    },
+    "config": {
+      "appleTerminalSetupInProgress": false,
+      "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+      "retained": "yes"
+    },
+    "events": [
+      [
+        "stat",
+        "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "import",
+          "com.apple.Terminal",
+          "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+        ]
+      ],
+      [
+        "exec",
+        "killall",
+        [
+          "cfprefsd"
+        ]
+      ],
+      [
+        "save",
+        {
+          "appleTerminalSetupInProgress": false,
+          "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+          "retained": "yes"
+        }
+      ]
+    ],
+    "logs": []
+  },
+  {
+    "name": "restore_ok",
+    "input": {
+      "operation": "restore",
+      "config": {
+        "appleTerminalSetupInProgress": true,
+        "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+        "retained": "yes"
+      },
+      "codes": [
+        0,
+        0
+      ],
+      "statFails": false,
+      "saveFailures": 0
+    },
+    "result": {
+      "status": "restored"
+    },
+    "config": {
+      "appleTerminalSetupInProgress": false,
+      "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+      "retained": "yes"
+    },
+    "events": [
+      [
+        "stat",
+        "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "import",
+          "com.apple.Terminal",
+          "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+        ]
+      ],
+      [
+        "exec",
+        "killall",
+        [
+          "cfprefsd"
+        ]
+      ],
+      [
+        "save",
+        {
+          "appleTerminalSetupInProgress": false,
+          "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+          "retained": "yes"
+        }
+      ]
+    ],
+    "logs": []
+  },
+  {
+    "name": "restore_complete_throws_once_then_catch_clears",
+    "input": {
+      "operation": "restore",
+      "config": {
+        "appleTerminalSetupInProgress": true,
+        "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+        "retained": "yes"
+      },
+      "codes": [
+        0,
+        0
+      ],
+      "statFails": false,
+      "saveFailures": 1
+    },
+    "result": {
+      "status": "failed",
+      "backupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+    },
+    "config": {
+      "appleTerminalSetupInProgress": false,
+      "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+      "retained": "yes"
+    },
+    "events": [
+      [
+        "stat",
+        "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "import",
+          "com.apple.Terminal",
+          "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+        ]
+      ],
+      [
+        "exec",
+        "killall",
+        [
+          "cfprefsd"
+        ]
+      ],
+      [
+        "save",
+        {
+          "appleTerminalSetupInProgress": false,
+          "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+          "retained": "yes"
+        }
+      ],
+      [
+        "save",
+        {
+          "appleTerminalSetupInProgress": false,
+          "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+          "retained": "yes"
+        }
+      ]
+    ],
+    "logs": [
+      "Error: Failed to restore Terminal.app settings with: Error: save failed"
+    ]
+  },
+  {
+    "name": "restore_complete_throws_twice",
+    "input": {
+      "operation": "restore",
+      "config": {
+        "appleTerminalSetupInProgress": true,
+        "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+        "retained": "yes"
+      },
+      "codes": [
+        0,
+        0
+      ],
+      "statFails": false,
+      "saveFailures": 2
+    },
+    "result": {
+      "thrown": "save failed"
+    },
+    "config": {
+      "appleTerminalSetupInProgress": true,
+      "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+      "retained": "yes"
+    },
+    "events": [
+      [
+        "stat",
+        "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+      ],
+      [
+        "exec",
+        "defaults",
+        [
+          "import",
+          "com.apple.Terminal",
+          "/oracle/Library/Preferences/com.apple.Terminal.plist.bak"
+        ]
+      ],
+      [
+        "exec",
+        "killall",
+        [
+          "cfprefsd"
+        ]
+      ],
+      [
+        "save",
+        {
+          "appleTerminalSetupInProgress": false,
+          "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+          "retained": "yes"
+        }
+      ],
+      [
+        "save",
+        {
+          "appleTerminalSetupInProgress": false,
+          "appleTerminalBackupPath": "/oracle/Library/Preferences/com.apple.Terminal.plist.bak",
+          "retained": "yes"
+        }
+      ]
+    ],
+    "logs": [
+      "Error: Failed to restore Terminal.app settings with: Error: save failed"
+    ]
+  },
+  {
+    "name": "restore_empty_clear_throws",
+    "input": {
+      "operation": "restore",
+      "config": {
+        "appleTerminalSetupInProgress": true
+      },
+      "codes": [],
+      "statFails": false,
+      "saveFailures": 1
+    },
+    "result": {
+      "thrown": "save failed"
+    },
+    "config": {
+      "appleTerminalSetupInProgress": true
+    },
+    "events": [
+      [
+        "save",
+        {
+          "appleTerminalSetupInProgress": false
+        }
+      ]
+    ],
+    "logs": []
+  }
+]

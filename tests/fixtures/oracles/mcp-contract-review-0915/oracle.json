@@ -1,0 +1,167 @@
+{
+  "provenance": "Actual CC 2.1.88 effect callbacks and dependency expressions (AST-selected), full config functions, and full flush callback; controlled I/O dependencies; not mounted React.",
+  "cancellationEvents": [
+    "config:initial",
+    "remote:clear",
+    "remote:start",
+    "config:connection",
+    "errors:0",
+    "state:old"
+  ],
+  "startedEvents": [
+    "remote:clear",
+    "remote:start",
+    "errors:0",
+    "connect:regular",
+    "counts",
+    "callback:late-completion"
+  ],
+  "phaseTwoEvents": [
+    "remote:clear",
+    "errors:0",
+    "connect:regular"
+  ],
+  "dependencyCases": {
+    "authOnlyInitialEqual": true,
+    "authOnlyConnectionEqual": false,
+    "equalNewDynamicInitialEqual": false,
+    "sameDynamicInitialEqual": true
+  },
+  "concurrentLoadStarts": [
+    "remote:start",
+    "plugins:start"
+  ],
+  "resourceCases": [
+    {
+      "label": "omitted",
+      "resources": {
+        "a": [
+          {
+            "server": "a",
+            "uri": "old"
+          }
+        ],
+        "b": [
+          {
+            "server": "b",
+            "uri": "other"
+          }
+        ]
+      },
+      "sameIdentity": true
+    },
+    {
+      "label": "empty",
+      "resources": {
+        "a": [
+          {
+            "server": "a",
+            "uri": "old"
+          }
+        ],
+        "b": [
+          {
+            "server": "b",
+            "uri": "other"
+          }
+        ]
+      },
+      "sameIdentity": false
+    },
+    {
+      "label": "nonempty",
+      "resources": {
+        "a": [
+          {
+            "server": "a",
+            "uri": "new"
+          }
+        ],
+        "b": [
+          {
+            "server": "b",
+            "uri": "other"
+          }
+        ]
+      },
+      "sameIdentity": false
+    },
+    {
+      "label": "failed",
+      "resources": {
+        "a": [
+          {
+            "server": "a",
+            "uri": "old"
+          }
+        ],
+        "b": [
+          {
+            "server": "b",
+            "uri": "other"
+          }
+        ]
+      },
+      "sameIdentity": false
+    }
+  ],
+  "helperCalls": [
+    [
+      {
+        "name": "a",
+        "tools": [
+          "mcp__a__tool",
+          "ListMcpResourcesTool",
+          "ReadMcpResourceTool"
+        ],
+        "resourcesUndefined": true
+      },
+      {
+        "name": "b",
+        "tools": [
+          "mcp__b__tool"
+        ],
+        "resourcesUndefined": true
+      }
+    ],
+    [
+      {
+        "name": "c",
+        "tools": [
+          "mcp__c__tool",
+          "ListMcpResourcesTool",
+          "ReadMcpResourceTool"
+        ],
+        "resourcesUndefined": true
+      }
+    ]
+  ],
+  "reconnectCases": [
+    {
+      "supplied": [],
+      "returned": [
+        "ListMcpResourcesTool",
+        "ReadMcpResourceTool"
+      ],
+      "resourcesUndefined": true
+    },
+    {
+      "supplied": [
+        "ListMcpResourcesTool"
+      ],
+      "returned": [
+        "ListMcpResourcesTool"
+      ],
+      "resourcesUndefined": true
+    },
+    {
+      "supplied": [
+        "ReadMcpResourceTool"
+      ],
+      "returned": [
+        "ReadMcpResourceTool"
+      ],
+      "resourcesUndefined": true
+    }
+  ]
+}

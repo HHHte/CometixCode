@@ -1,0 +1,65 @@
+[
+  {
+    "input": "0x10",
+    "result": {
+      "value": 16
+    },
+    "serialized": "{\"value\":16}",
+    "text": "16",
+    "negativeZero": false
+  },
+  {
+    "input": "-0",
+    "result": {
+      "value": 0
+    },
+    "serialized": "{\"value\":0}",
+    "text": "0",
+    "negativeZero": true
+  },
+  {
+    "input": "1e-7",
+    "result": {
+      "value": 1e-7
+    },
+    "serialized": "{\"value\":1e-7}",
+    "text": "1e-7",
+    "negativeZero": false
+  },
+  {
+    "input": "1e-6",
+    "result": {
+      "value": 0.000001
+    },
+    "serialized": "{\"value\":0.000001}",
+    "text": "0.000001",
+    "negativeZero": false
+  },
+  {
+    "input": "1e20",
+    "result": {
+      "value": 100000000000000000000
+    },
+    "serialized": "{\"value\":100000000000000000000}",
+    "text": "100000000000000000000",
+    "negativeZero": false
+  },
+  {
+    "input": "1e21",
+    "result": {
+      "value": 1e+21
+    },
+    "serialized": "{\"value\":1e+21}",
+    "text": "1e+21",
+    "negativeZero": false
+  },
+  {
+    "input": "9007199254740993",
+    "result": {
+      "value": 9007199254740992
+    },
+    "serialized": "{\"value\":9007199254740992}",
+    "text": "9007199254740992",
+    "negativeZero": false
+  }
+]

@@ -1,0 +1,1517 @@
+[
+  {
+    "name": "string_ok",
+    "input": "hi",
+    "success": true,
+    "data": "hi",
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string"
+    }
+  },
+  {
+    "name": "string_wrong_type",
+    "input": 5,
+    "success": false,
+    "issues": [
+      {
+        "expected": "string",
+        "code": "invalid_type",
+        "path": [],
+        "message": "Invalid input: expected string, received number"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string"
+    }
+  },
+  {
+    "name": "string_optional_null",
+    "input": null,
+    "success": false,
+    "issues": [
+      {
+        "expected": "string",
+        "code": "invalid_type",
+        "path": [],
+        "message": "Invalid input: expected string, received null"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string"
+    }
+  },
+  {
+    "name": "default_absent",
+    "input": {},
+    "success": true,
+    "data": {
+      "a": "d"
+    },
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "a": {
+          "default": "d",
+          "type": "string"
+        }
+      },
+      "required": [
+        "a"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "default_null_fails",
+    "input": {
+      "a": null
+    },
+    "success": false,
+    "issues": [
+      {
+        "expected": "string",
+        "code": "invalid_type",
+        "path": [
+          "a"
+        ],
+        "message": "Invalid input: expected string, received null"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "a": {
+          "default": "d",
+          "type": "string"
+        }
+      },
+      "required": [
+        "a"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "int_fract",
+    "input": 1.5,
+    "success": false,
+    "issues": [
+      {
+        "expected": "int",
+        "format": "safeint",
+        "code": "invalid_type",
+        "path": [],
+        "message": "Invalid input: expected int, received number"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "integer",
+      "minimum": -9007199254740991,
+      "maximum": 9007199254740991
+    }
+  },
+  {
+    "name": "int_over_safe",
+    "input": 9007199254740992,
+    "success": false,
+    "issues": [
+      {
+        "code": "too_big",
+        "maximum": 9007199254740991,
+        "note": "Integers must be within the safe integer range.",
+        "origin": "int",
+        "path": [],
+        "message": "Too big: expected int to be <9007199254740991"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "integer",
+      "minimum": -9007199254740991,
+      "maximum": 9007199254740991
+    }
+  },
+  {
+    "name": "nonnegative_neg",
+    "input": -1,
+    "success": false,
+    "issues": [
+      {
+        "origin": "number",
+        "code": "too_small",
+        "minimum": 0,
+        "inclusive": true,
+        "path": [],
+        "message": "Too small: expected number to be >=0"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "number",
+      "minimum": 0
+    }
+  },
+  {
+    "name": "positive_zero",
+    "input": 0,
+    "success": false,
+    "issues": [
+      {
+        "origin": "number",
+        "code": "too_small",
+        "minimum": 0,
+        "inclusive": false,
+        "path": [],
+        "message": "Too small: expected number to be >0"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "number",
+      "exclusiveMinimum": 0
+    }
+  },
+  {
+    "name": "enum_ok",
+    "input": "a",
+    "success": true,
+    "data": "a",
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "a",
+        "b"
+      ]
+    }
+  },
+  {
+    "name": "enum_bad",
+    "input": "z",
+    "success": false,
+    "issues": [
+      {
+        "code": "invalid_value",
+        "values": [
+          "a",
+          "b"
+        ],
+        "path": [],
+        "message": "Invalid option: expected one of \"a\"|\"b\""
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "enum": [
+        "a",
+        "b"
+      ]
+    }
+  },
+  {
+    "name": "literal_ok",
+    "input": "x",
+    "success": true,
+    "data": "x",
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "const": "x"
+    }
+  },
+  {
+    "name": "literal_bad",
+    "input": "y",
+    "success": false,
+    "issues": [
+      {
+        "code": "invalid_value",
+        "values": [
+          "x"
+        ],
+        "path": [],
+        "message": "Invalid input: expected \"x\""
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "const": "x"
+    }
+  },
+  {
+    "name": "strict_stray",
+    "input": {
+      "a": "x",
+      "b": 1
+    },
+    "success": false,
+    "issues": [
+      {
+        "code": "unrecognized_keys",
+        "keys": [
+          "b"
+        ],
+        "path": [],
+        "message": "Unrecognized key: \"b\""
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "a"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "object_strip",
+    "input": {
+      "a": "x",
+      "b": 1
+    },
+    "success": true,
+    "data": {
+      "a": "x"
+    },
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "a"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "object_missing",
+    "input": {},
+    "success": false,
+    "issues": [
+      {
+        "expected": "string",
+        "code": "invalid_type",
+        "path": [
+          "a"
+        ],
+        "message": "Invalid input: expected string, received undefined"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "a"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "nested_path",
+    "input": {
+      "a": {
+        "b": [
+          "ok",
+          5
+        ]
+      }
+    },
+    "success": false,
+    "issues": [
+      {
+        "expected": "string",
+        "code": "invalid_type",
+        "path": [
+          "a",
+          "b",
+          1
+        ],
+        "message": "Invalid input: expected string, received number"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "object",
+          "properties": {
+            "b": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "b"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "a"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "array_ok",
+    "input": [
+      1,
+      2
+    ],
+    "success": true,
+    "data": [
+      1,
+      2
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    }
+  },
+  {
+    "name": "record_ok",
+    "input": {
+      "k": 1
+    },
+    "success": true,
+    "data": {
+      "k": 1
+    },
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "number"
+      }
+    }
+  },
+  {
+    "name": "union_fail",
+    "input": true,
+    "success": false,
+    "issues": [
+      {
+        "code": "invalid_union",
+        "errors": [
+          [
+            {
+              "expected": "string",
+              "code": "invalid_type",
+              "path": [],
+              "message": "Invalid input: expected string, received boolean"
+            }
+          ],
+          [
+            {
+              "expected": "number",
+              "code": "invalid_type",
+              "path": [],
+              "message": "Invalid input: expected number, received boolean"
+            }
+          ]
+        ],
+        "path": [],
+        "message": "Invalid input"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ]
+    }
+  },
+  {
+    "name": "disc_union_ok",
+    "input": {
+      "type": "image",
+      "file": {
+        "originalSize": 10
+      }
+    },
+    "success": true,
+    "data": {
+      "type": "image",
+      "file": {
+        "originalSize": 10
+      }
+    },
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "text"
+            },
+            "file": {
+              "type": "object",
+              "properties": {
+                "filePath": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "filePath"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "type",
+            "file"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "image"
+            },
+            "file": {
+              "type": "object",
+              "properties": {
+                "originalSize": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "originalSize"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "type",
+            "file"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  {
+    "name": "disc_union_bad_tag",
+    "input": {
+      "type": "z"
+    },
+    "success": false,
+    "issues": [
+      {
+        "code": "invalid_union",
+        "errors": [],
+        "note": "No matching discriminator",
+        "path": [
+          "type"
+        ],
+        "message": "Invalid input"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "a"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "b"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  {
+    "name": "read_input_projection",
+    "input": {
+      "file_path": "/a",
+      "offset": 30
+    },
+    "success": true,
+    "data": {
+      "file_path": "/a",
+      "offset": 30
+    },
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "file_path": {
+          "description": "The absolute path to the file to read",
+          "type": "string"
+        },
+        "offset": {
+          "description": "The line number to start reading from",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "limit": {
+          "description": "The number of lines to read",
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "file_path"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "any_passthrough",
+    "input": {
+      "nested": [
+        1,
+        "x",
+        null
+      ]
+    },
+    "success": true,
+    "data": {
+      "nested": [
+        1,
+        "x",
+        null
+      ]
+    },
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+    }
+  },
+  {
+    "name": "refine_ok",
+    "input": "abcd",
+    "success": true,
+    "data": "abcd",
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string"
+    }
+  },
+  {
+    "name": "refine_fail",
+    "input": "ab",
+    "success": false,
+    "issues": [
+      {
+        "code": "custom",
+        "path": [],
+        "message": "too short"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string"
+    }
+  },
+  {
+    "name": "transform_data",
+    "input": "hello",
+    "success": true,
+    "data": 5,
+    "json_schema": {
+      "__error__": "Transforms cannot be represented in JSON Schema"
+    }
+  },
+  {
+    "name": "nullable_null",
+    "input": null,
+    "success": true,
+    "data": null,
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  {
+    "name": "nullable_wrong_type",
+    "input": 5,
+    "success": false,
+    "issues": [
+      {
+        "expected": "string",
+        "code": "invalid_type",
+        "path": [],
+        "message": "Invalid input: expected string, received number"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  {
+    "name": "optional_default_absent",
+    "input": {},
+    "success": true,
+    "data": {
+      "r": false
+    },
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "r": {
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "strict_multi_issue",
+    "input": {
+      "c": 1
+    },
+    "success": false,
+    "issues": [
+      {
+        "expected": "string",
+        "code": "invalid_type",
+        "path": [
+          "a"
+        ],
+        "message": "Invalid input: expected string, received undefined"
+      },
+      {
+        "expected": "number",
+        "code": "invalid_type",
+        "path": [
+          "b"
+        ],
+        "message": "Invalid input: expected number, received undefined"
+      },
+      {
+        "code": "unrecognized_keys",
+        "keys": [
+          "c"
+        ],
+        "path": [],
+        "message": "Unrecognized key: \"c\""
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "string"
+        },
+        "b": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "a",
+        "b"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "array_multi_issue",
+    "input": [
+      1,
+      "ok",
+      true
+    ],
+    "success": false,
+    "issues": [
+      {
+        "expected": "number",
+        "code": "invalid_type",
+        "path": [
+          1
+        ],
+        "message": "Invalid input: expected number, received string"
+      },
+      {
+        "expected": "number",
+        "code": "invalid_type",
+        "path": [
+          2
+        ],
+        "message": "Invalid input: expected number, received boolean"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    }
+  },
+  {
+    "name": "passthrough_keeps_unknown",
+    "input": {
+      "a": "x",
+      "b": 1,
+      "c": {
+        "d": 2
+      }
+    },
+    "success": true,
+    "data": {
+      "a": "x",
+      "b": 1,
+      "c": {
+        "d": 2
+      }
+    },
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "a"
+      ],
+      "additionalProperties": {}
+    }
+  },
+  {
+    "name": "passthrough_still_requires",
+    "input": {
+      "b": 1
+    },
+    "success": false,
+    "issues": [
+      {
+        "expected": "string",
+        "code": "invalid_type",
+        "path": [
+          "a"
+        ],
+        "message": "Invalid input: expected string, received undefined"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "a"
+      ],
+      "additionalProperties": {}
+    }
+  },
+  {
+    "name": "passthrough_empty_shape",
+    "input": {
+      "any": "thing"
+    },
+    "success": true,
+    "data": {
+      "any": "thing"
+    },
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": {}
+    }
+  },
+  {
+    "name": "string_min_fail",
+    "input": "a",
+    "success": false,
+    "issues": [
+      {
+        "origin": "string",
+        "code": "too_small",
+        "minimum": 2,
+        "inclusive": true,
+        "path": [],
+        "message": "Too small: expected string to have >=2 characters"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "minLength": 2
+    }
+  },
+  {
+    "name": "string_min_ok",
+    "input": "ab",
+    "success": true,
+    "data": "ab",
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "minLength": 2
+    }
+  },
+  {
+    "name": "string_regex_fail",
+    "input": "bad id!",
+    "success": false,
+    "issues": [
+      {
+        "origin": "string",
+        "code": "invalid_format",
+        "format": "regex",
+        "pattern": "/^[\\w-]+$/",
+        "path": [],
+        "message": "Invalid string: must match pattern /^[\\w-]+$/"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "pattern": "^[\\w-]+$"
+    }
+  },
+  {
+    "name": "string_regex_ok",
+    "input": "ok-id_1",
+    "success": true,
+    "data": "ok-id_1",
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "pattern": "^[\\w-]+$"
+    }
+  },
+  {
+    "name": "string_url_fail",
+    "input": "not a url",
+    "success": false,
+    "issues": [
+      {
+        "code": "invalid_format",
+        "format": "url",
+        "path": [],
+        "message": "Invalid URL"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "format": "uri"
+    }
+  },
+  {
+    "name": "string_url_ok",
+    "input": "https://example.com/x?y=1",
+    "success": true,
+    "data": "https://example.com/x?y=1",
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "format": "uri"
+    }
+  },
+  {
+    "name": "array_min_fail",
+    "input": [],
+    "success": false,
+    "issues": [
+      {
+        "origin": "array",
+        "code": "too_small",
+        "minimum": 1,
+        "inclusive": true,
+        "path": [],
+        "message": "Too small: expected array to have >=1 items"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  {
+    "name": "array_max_fail",
+    "input": [
+      "a",
+      "b",
+      "c"
+    ],
+    "success": false,
+    "issues": [
+      {
+        "origin": "array",
+        "code": "too_big",
+        "maximum": 2,
+        "inclusive": true,
+        "path": [],
+        "message": "Too big: expected array to have <=2 items"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "maxItems": 2,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  {
+    "name": "array_minmax_ok",
+    "input": [
+      "a"
+    ],
+    "success": true,
+    "data": [
+      "a"
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "minItems": 1,
+      "maxItems": 2,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  {
+    "name": "num_min_fail",
+    "input": -1,
+    "success": false,
+    "issues": [
+      {
+        "origin": "number",
+        "code": "too_small",
+        "minimum": 0,
+        "inclusive": true,
+        "path": [],
+        "message": "Too small: expected number to be >=0"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "number",
+      "minimum": 0
+    }
+  },
+  {
+    "name": "num_max_fail",
+    "input": 700000,
+    "success": false,
+    "issues": [
+      {
+        "origin": "number",
+        "code": "too_big",
+        "maximum": 600000,
+        "inclusive": true,
+        "path": [],
+        "message": "Too big: expected number to be <=600000"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "number",
+      "maximum": 600000
+    }
+  },
+  {
+    "name": "num_minmax_ok",
+    "input": 5,
+    "success": true,
+    "data": 5,
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "default": 30000,
+      "type": "number",
+      "minimum": 0,
+      "maximum": 600000
+    }
+  },
+  {
+    "name": "string_min_custom_message",
+    "input": "",
+    "success": false,
+    "issues": [
+      {
+        "origin": "string",
+        "code": "too_small",
+        "minimum": 1,
+        "inclusive": true,
+        "path": [],
+        "message": "Content cannot be empty"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  {
+    "name": "string_length_short",
+    "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "success": false,
+    "issues": [
+      {
+        "origin": "string",
+        "code": "too_small",
+        "minimum": 40,
+        "inclusive": true,
+        "exact": true,
+        "path": [],
+        "message": "Too small: expected string to have >=40 characters"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 40
+    }
+  },
+  {
+    "name": "string_length_long",
+    "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "success": false,
+    "issues": [
+      {
+        "origin": "string",
+        "code": "too_big",
+        "maximum": 40,
+        "inclusive": true,
+        "exact": true,
+        "path": [],
+        "message": "Too big: expected string to have <=40 characters"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 40
+    }
+  },
+  {
+    "name": "string_length_ok",
+    "input": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "success": true,
+    "data": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 40
+    }
+  },
+  {
+    "name": "string_starts_with_fail",
+    "input": "foo/bar",
+    "success": false,
+    "issues": [
+      {
+        "origin": "string",
+        "code": "invalid_format",
+        "format": "starts_with",
+        "prefix": "./",
+        "path": [],
+        "message": "Invalid string: must start with \"./\""
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "pattern": "^\\.\\/.*"
+    }
+  },
+  {
+    "name": "string_starts_with_ok",
+    "input": "./foo",
+    "success": true,
+    "data": "./foo",
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "pattern": "^\\.\\/.*"
+    }
+  },
+  {
+    "name": "gitsha_combo_fail",
+    "input": "abc",
+    "success": false,
+    "issues": [
+      {
+        "origin": "string",
+        "code": "too_small",
+        "minimum": 40,
+        "inclusive": true,
+        "exact": true,
+        "path": [],
+        "message": "Too small: expected string to have >=40 characters"
+      },
+      {
+        "origin": "string",
+        "code": "invalid_format",
+        "format": "regex",
+        "pattern": "/^[a-f0-9]{40}$/",
+        "path": [],
+        "message": "Must be a full 40-character lowercase git commit SHA"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 40,
+      "pattern": "^[a-f0-9]{40}$"
+    }
+  },
+  {
+    "name": "refine_chain_both_fail",
+    "input": "Bad Name",
+    "success": false,
+    "issues": [
+      {
+        "code": "custom",
+        "path": [],
+        "message": "no spaces"
+      },
+      {
+        "code": "custom",
+        "path": [],
+        "message": "lowercase only"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string"
+    }
+  },
+  {
+    "name": "min_then_refine_fail",
+    "input": "a b",
+    "success": false,
+    "issues": [
+      {
+        "origin": "string",
+        "code": "too_small",
+        "minimum": 5,
+        "inclusive": true,
+        "path": [],
+        "message": "too short"
+      },
+      {
+        "code": "custom",
+        "path": [],
+        "message": "no spaces"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string",
+      "minLength": 5
+    }
+  },
+  {
+    "name": "type_fail_skips_refine",
+    "input": 5,
+    "success": false,
+    "issues": [
+      {
+        "expected": "string",
+        "code": "invalid_type",
+        "path": [],
+        "message": "Invalid input: expected string, received number"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string"
+    }
+  },
+  {
+    "name": "object_field_fail_skips_refine",
+    "input": {
+      "a": "z"
+    },
+    "success": false,
+    "issues": [
+      {
+        "origin": "string",
+        "code": "too_small",
+        "minimum": 3,
+        "inclusive": true,
+        "path": [
+          "a"
+        ],
+        "message": "Too small: expected string to have >=3 characters"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "string",
+          "minLength": 3
+        }
+      },
+      "required": [
+        "a"
+      ],
+      "additionalProperties": false
+    }
+  },
+  {
+    "name": "partial_record_ok",
+    "input": {
+      "A": [
+        "x"
+      ]
+    },
+    "success": true,
+    "data": {
+      "A": [
+        "x"
+      ]
+    },
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "propertyNames": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "A",
+              "B"
+            ]
+          },
+          {
+            "not": {}
+          }
+        ]
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "name": "partial_record_bad_key",
+    "input": {
+      "C": [
+        "x"
+      ]
+    },
+    "success": false,
+    "issues": [
+      {
+        "origin": "record",
+        "code": "invalid_key",
+        "issues": [
+          {
+            "code": "invalid_union",
+            "errors": [
+              [
+                {
+                  "code": "invalid_value",
+                  "values": [
+                    "A",
+                    "B"
+                  ],
+                  "path": [],
+                  "message": "Invalid option: expected one of \"A\"|\"B\""
+                }
+              ],
+              [
+                {
+                  "expected": "never",
+                  "code": "invalid_type",
+                  "path": [],
+                  "message": "Invalid input: expected never, received string"
+                }
+              ]
+            ],
+            "path": [],
+            "message": "Invalid input"
+          }
+        ],
+        "path": [
+          "C"
+        ],
+        "message": "Invalid key in record"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "propertyNames": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "A",
+              "B"
+            ]
+          },
+          {
+            "not": {}
+          }
+        ]
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "name": "partial_record_bad_value",
+    "input": {
+      "A": [
+        1
+      ]
+    },
+    "success": false,
+    "issues": [
+      {
+        "expected": "string",
+        "code": "invalid_type",
+        "path": [
+          "A",
+          0
+        ],
+        "message": "Invalid input: expected string, received number"
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "object",
+      "propertyNames": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "A",
+              "B"
+            ]
+          },
+          {
+            "not": {}
+          }
+        ]
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "name": "super_refine_params",
+    "input": "ab",
+    "success": false,
+    "issues": [
+      {
+        "code": "custom",
+        "message": "too short",
+        "params": {
+          "received": "ab"
+        },
+        "path": []
+      }
+    ],
+    "json_schema": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "type": "string"
+    }
+  }
+]

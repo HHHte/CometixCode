@@ -1,0 +1,125 @@
+{
+  "failed": [
+    {
+      "name": "fixture-market-missing-0914",
+      "error": "clone failed"
+    }
+  ],
+  "extra": [
+    {
+      "type": "marketplace-load-failed",
+      "source": "fixture-market-missing-0914",
+      "marketplace": "fixture-market-missing-0914",
+      "reason": "duplicate"
+    }
+  ],
+  "plugins": [
+    {
+      "type": "plugin-not-found",
+      "source": "plug@market",
+      "pluginId": "plug",
+      "marketplace": "market"
+    },
+    {
+      "type": "plugin-not-found",
+      "source": "plug@market",
+      "pluginId": "plug",
+      "marketplace": "market"
+    }
+  ],
+  "other": [
+    {
+      "type": "path-not-found",
+      "source": "configuration",
+      "path": "/fixture/missing",
+      "component": "commands"
+    }
+  ],
+  "broken": [
+    {
+      "name": "fixture-broken",
+      "error": "invalid manifest"
+    }
+  ],
+  "transient": [
+    {
+      "type": "network-error",
+      "source": "net@market",
+      "plugin": "net",
+      "url": "https://fixture.invalid",
+      "details": "offline"
+    }
+  ],
+  "scopes": [
+    [
+      "plug@market",
+      "project"
+    ]
+  ],
+  "rows": [
+    {
+      "label": "net",
+      "message": "Network error accessing https://fixture.invalid: offline",
+      "guidance": "Restart to retry loading plugins",
+      "action": {
+        "kind": "none"
+      }
+    },
+    {
+      "label": "fixture-market-missing-0914",
+      "message": "clone failed",
+      "action": {
+        "kind": "navigate",
+        "tab": "marketplaces",
+        "viewState": {
+          "type": "manage-marketplaces",
+          "targetMarketplace": "fixture-market-missing-0914",
+          "action": "remove"
+        }
+      }
+    },
+    {
+      "label": "fixture-broken",
+      "message": "invalid manifest",
+      "action": {
+        "kind": "remove-installed-marketplace",
+        "name": "fixture-broken"
+      }
+    },
+    {
+      "label": "plug @ market",
+      "message": "Plugin \"plug\" not found in marketplace \"market\"",
+      "guidance": "Plugin may not exist in marketplace \"market\"",
+      "action": {
+        "kind": "navigate",
+        "tab": "installed",
+        "viewState": {
+          "type": "manage-plugins",
+          "targetPlugin": "plug",
+          "action": "uninstall"
+        }
+      },
+      "scope": "project"
+    },
+    {
+      "label": "configuration",
+      "message": "commands path not found: /fixture/missing",
+      "guidance": "Check that the path in your manifest or marketplace config is correct",
+      "action": {
+        "kind": "none"
+      }
+    }
+  ],
+  "names": [
+    "plug",
+    "plug",
+    null,
+    "net"
+  ],
+  "transientFlags": [
+    false,
+    false,
+    false,
+    true
+  ]
+}

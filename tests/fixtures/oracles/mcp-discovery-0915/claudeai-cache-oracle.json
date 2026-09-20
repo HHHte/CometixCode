@@ -1,0 +1,14 @@
+{
+  "sameInFlight": true,
+  "requestCount": 2,
+  "oldKeys": [
+    "claude.ai old"
+  ],
+  "freshKeys": [
+    "claude.ai new"
+  ],
+  "afterOldCompletionKeys": [
+    "claude.ai new"
+  ],
+  "sameFreshPromise": true
+}

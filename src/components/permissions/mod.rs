@@ -1,0 +1,64 @@
+//! Maps to: CC `components/permissions/`.
+//! UI-only permission prompt components. They render queued mock permission
+//! requests and return typed choices to REPL; no tool execution or persistence
+//! happens here.
+
+pub mod ask_user_question_permission_request;
+pub mod bash_permission_request;
+pub mod computer_use_approval;
+pub mod enter_plan_mode_permission_request;
+pub mod exit_plan_mode_permission_request;
+pub mod fallback_permission_request;
+pub mod file_edit_permission_request;
+pub mod file_permission_dialog;
+pub mod file_write_permission_request;
+pub mod file_write_tool_diff;
+pub mod filesystem_permission_request;
+pub mod hooks;
+pub mod monitor_permission_request;
+pub mod notebook_edit_permission_request;
+pub mod notebook_edit_tool_diff;
+pub mod permission_decision_debug_info;
+pub mod permission_dialog;
+pub mod permission_explanation;
+pub mod permission_prompt;
+pub mod permission_request;
+pub mod permission_request_title;
+pub mod permission_rule_explanation;
+pub mod powershell_permission_request;
+pub mod review_artifact_permission_request;
+pub mod rules;
+pub mod sandbox_permission_request;
+pub mod sed_edit_permission_request;
+pub mod shell_permission_helpers;
+pub mod skill_permission_request;
+pub mod use_shell_permission_feedback;
+pub mod utils;
+pub mod web_fetch_permission_request;
+pub mod worker_badge;
+pub mod worker_pending_permission;
+
+pub use ask_user_question_permission_request::AskUserQuestionPermissionRequest;
+pub use bash_permission_request::BashPermissionRequest;
+pub use computer_use_approval::ComputerUseApproval;
+pub use enter_plan_mode_permission_request::EnterPlanModePermissionRequest;
+pub use exit_plan_mode_permission_request::ExitPlanModePermissionRequest;
+pub use fallback_permission_request::FallbackPermissionRequest;
+pub use file_edit_permission_request::FileEditPermissionRequest;
+pub use file_permission_dialog::FilePermissionDialog;
+pub use file_write_permission_request::FileWritePermissionRequest;
+pub use file_write_tool_diff::FileWriteToolDiff;
+pub use filesystem_permission_request::FilesystemPermissionRequest;
+pub use notebook_edit_permission_request::NotebookEditPermissionRequest;
+pub use notebook_edit_tool_diff::NotebookEditToolDiff;
+pub use permission_decision_debug_info::PermissionDecisionDebugInfo;
+pub use permission_dialog::PermissionDialog;
+pub use permission_explanation::PermissionExplainerContent;
+pub use permission_request::PermissionRequest;
+pub use permission_rule_explanation::PermissionRuleExplanation;
+pub use powershell_permission_request::PowerShellPermissionRequest;
+pub use sandbox_permission_request::SandboxPermissionRequest;
+pub use sed_edit_permission_request::SedEditPermissionRequest;
+pub use skill_permission_request::SkillPermissionRequest;
+pub use web_fetch_permission_request::WebFetchPermissionRequest;
+pub use worker_pending_permission::WorkerPendingPermission;

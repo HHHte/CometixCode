@@ -1,0 +1,78 @@
+[
+  {
+    "input": "/",
+    "events": [
+      [
+        "search",
+        true
+      ],
+      [
+        "query",
+        ""
+      ]
+    ]
+  },
+  {
+    "input": "j",
+    "events": []
+  },
+  {
+    "input": "k",
+    "events": []
+  },
+  {
+    "input": "i",
+    "events": []
+  },
+  {
+    "input": "jk",
+    "events": [
+      [
+        "search",
+        true
+      ],
+      [
+        "query",
+        "jk"
+      ]
+    ]
+  },
+  {
+    "input": "z",
+    "events": [
+      [
+        "search",
+        true
+      ],
+      [
+        "query",
+        "z"
+      ]
+    ]
+  },
+  {
+    "input": "﻿",
+    "events": []
+  },
+  {
+    "input": "",
+    "events": [
+      [
+        "search",
+        true
+      ],
+      [
+        "query",
+        ""
+      ]
+    ]
+  },
+  {
+    "input": " ",
+    "events": []
+  },
+  {
+    "input": "   ",
+    "events": []
+  }
+]

@@ -1,0 +1,49 @@
+{
+  "manifest": {
+    "manifest_version": "0.4",
+    "name": "probe",
+    "version": "1.0.0",
+    "description": "offline test",
+    "author": {
+      "name": "Test"
+    },
+    "server": {
+      "type": "uv",
+      "entry_point": "main.py",
+      "mcp_config": {
+        "command": "uv",
+        "args": [
+          "run",
+          "${__dirname}/main.py"
+        ],
+        "env": {
+          "BASE": "1"
+        },
+        "platform_overrides": {
+          "darwin": {
+            "env": {
+              "PLATFORM": "2"
+            }
+          }
+        }
+      }
+    }
+  },
+  "config": {
+    "command": "uv",
+    "args": [
+      "run",
+      "/EXTRACTED/main.py"
+    ],
+    "env": {
+      "PLATFORM": "2"
+    },
+    "platform_overrides": {
+      "darwin": {
+        "env": {
+          "PLATFORM": "2"
+        }
+      }
+    }
+  }
+}

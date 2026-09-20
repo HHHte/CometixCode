@@ -1,0 +1,89 @@
+[
+  {
+    "name": "ordinary-first",
+    "plugin": [
+      "z",
+      "a"
+    ],
+    "manual": [],
+    "keys": [
+      "z"
+    ],
+    "chosen": [
+      "z"
+    ],
+    "suppressed": [
+      {
+        "name": "a",
+        "duplicateOf": "z"
+      }
+    ]
+  },
+  {
+    "name": "integer-own-keys",
+    "plugin": [
+      "10",
+      "2",
+      "z",
+      "a"
+    ],
+    "manual": [],
+    "keys": [
+      "2"
+    ],
+    "chosen": [
+      "2"
+    ],
+    "suppressed": [
+      {
+        "name": "10",
+        "duplicateOf": "2"
+      },
+      {
+        "name": "z",
+        "duplicateOf": "2"
+      },
+      {
+        "name": "a",
+        "duplicateOf": "2"
+      }
+    ]
+  },
+  {
+    "name": "manual-first",
+    "plugin": [
+      "plugin:p:x"
+    ],
+    "manual": [
+      "z",
+      "a"
+    ],
+    "keys": [],
+    "chosen": [],
+    "suppressed": [
+      {
+        "name": "plugin:p:x",
+        "duplicateOf": "z"
+      }
+    ]
+  },
+  {
+    "name": "manual-integer-keys",
+    "plugin": [
+      "plugin:p:x"
+    ],
+    "manual": [
+      "10",
+      "2",
+      "z"
+    ],
+    "keys": [],
+    "chosen": [],
+    "suppressed": [
+      {
+        "name": "plugin:p:x",
+        "duplicateOf": "2"
+      }
+    ]
+  }
+]

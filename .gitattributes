@@ -1,0 +1,15 @@
+# Trellis: append-only developer journals should merge cleanly across
+# parallel sessions/worktrees — each session only appends a new block, so
+# there is nothing to actually conflict on.
+#
+# Do NOT add a rule for workspace/*/index.md here — it is fully regenerated
+# every session, so a real conflict there is expected and safe to resolve by
+# picking either side (task state lives in task.json, not index.md). See
+# .trellis/spec/cli/backend/directory-structure.md for details.
+.trellis/workspace/*/journal-*.md merge=union
+
+# Byte-exact Kitty captures contain terminal controls, CR and padded cells.
+# Keep them unchanged and avoid interpreting terminal bytes as source diffs.
+.trellis/tasks/09-10-init-command-parity/research/proof/**/kitty-*.raw -text -diff
+# These are captured comparison outputs; whitespace is part of the evidence.
+.trellis/tasks/09-10-init-command-parity/research/proof/export-0913/*-export.diff -text -whitespace

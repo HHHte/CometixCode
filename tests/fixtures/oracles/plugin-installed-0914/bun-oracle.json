@@ -1,0 +1,408 @@
+{
+  "bun": "1.3.14",
+  "readCases": [
+    {
+      "name": "missing",
+      "input": null,
+      "missing": true,
+      "value": {
+        "version": 2,
+        "plugins": {}
+      },
+      "same": true,
+      "memorySame": true,
+      "logs": [
+        [
+          "installed_plugins.json doesn't exist, returning empty V2 object"
+        ]
+      ],
+      "errors": [],
+      "effects": [],
+      "unchanged": true
+    },
+    {
+      "name": "empty",
+      "input": {
+        "version": 2,
+        "plugins": {}
+      },
+      "missing": false,
+      "value": {
+        "version": 2,
+        "plugins": {}
+      },
+      "same": true,
+      "memorySame": true,
+      "logs": [
+        [
+          "Loaded 0 installed plugins from $ROOT/empty/installed_plugins.json"
+        ]
+      ],
+      "errors": [],
+      "effects": [],
+      "unchanged": true
+    },
+    {
+      "name": "invalidVersion",
+      "input": {
+        "plugins": {}
+      },
+      "missing": false,
+      "value": {
+        "version": 2,
+        "plugins": {}
+      },
+      "same": true,
+      "memorySame": true,
+      "logs": [
+        [
+          "Failed to load installed_plugins.json: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      1\n    ],\n    \"path\": [\n      \"version\"\n    ],\n    \"message\": \"Invalid input: expected 1\"\n  }\n]. Starting with empty state.",
+          {
+            "level": "error"
+          }
+        ]
+      ],
+      "errors": [
+        {
+          "name": "ZodError",
+          "message": "[\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      1\n    ],\n    \"path\": [\n      \"version\"\n    ],\n    \"message\": \"Invalid input: expected 1\"\n  }\n]"
+        }
+      ],
+      "effects": [],
+      "unchanged": true
+    },
+    {
+      "name": "invalidEntry",
+      "input": {
+        "version": 2,
+        "plugins": {
+          "p@m": [
+            {
+              "scope": "local",
+              "installPath": "/p",
+              "projectPath": null
+            }
+          ]
+        }
+      },
+      "missing": false,
+      "value": {
+        "version": 2,
+        "plugins": {}
+      },
+      "same": true,
+      "memorySame": true,
+      "logs": [
+        [
+          "Failed to load installed_plugins.json: [\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"plugins\",\n      \"p@m\",\n      0,\n      \"projectPath\"\n    ],\n    \"message\": \"Invalid input: expected string, received null\"\n  }\n]. Starting with empty state.",
+          {
+            "level": "error"
+          }
+        ]
+      ],
+      "errors": [
+        {
+          "name": "ZodError",
+          "message": "[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"plugins\",\n      \"p@m\",\n      0,\n      \"projectPath\"\n    ],\n    \"message\": \"Invalid input: expected string, received null\"\n  }\n]"
+        }
+      ],
+      "effects": [],
+      "unchanged": true
+    },
+    {
+      "name": "v1",
+      "input": {
+        "version": 1,
+        "plugins": {
+          "p@m": {
+            "version": "1.0",
+            "installedAt": "T",
+            "installPath": "/ignored",
+            "gitCommitSha": "abc"
+          }
+        }
+      },
+      "missing": false,
+      "value": {
+        "version": 2,
+        "plugins": {
+          "p@m": [
+            {
+              "scope": "user",
+              "installPath": "$ROOT/v1/cache/m/p/1.0",
+              "version": "1.0",
+              "installedAt": "T",
+              "gitCommitSha": "abc"
+            }
+          ]
+        }
+      },
+      "same": true,
+      "memorySame": true,
+      "logs": [
+        [
+          "Loaded and converted 1 plugins from V1 format"
+        ]
+      ],
+      "errors": [],
+      "effects": [],
+      "unchanged": true
+    },
+    {
+      "name": "v2",
+      "input": {
+        "version": 2,
+        "plugins": {
+          "p@m": [
+            {
+              "scope": "local",
+              "installPath": "/p",
+              "extra": 7
+            }
+          ]
+        },
+        "extra": true
+      },
+      "missing": false,
+      "value": {
+        "version": 2,
+        "plugins": {
+          "p@m": [
+            {
+              "scope": "local",
+              "installPath": "/p"
+            }
+          ]
+        }
+      },
+      "same": true,
+      "memorySame": true,
+      "logs": [
+        [
+          "Loaded 1 installed plugins from $ROOT/v2/installed_plugins.json"
+        ]
+      ],
+      "errors": [],
+      "effects": [],
+      "unchanged": true
+    },
+    {
+      "name": "json",
+      "input": "{",
+      "missing": false,
+      "value": {
+        "version": 2,
+        "plugins": {}
+      },
+      "same": true,
+      "memorySame": true,
+      "logs": [
+        [
+          "Failed to load installed_plugins.json: JSON Parse error: Expected '}'. Starting with empty state.",
+          {
+            "level": "error"
+          }
+        ]
+      ],
+      "errors": [
+        {
+          "name": "SyntaxError",
+          "message": "JSON Parse error: Expected '}'"
+        }
+      ],
+      "effects": [],
+      "unchanged": true
+    },
+    {
+      "name": "bom",
+      "input": "﻿{}",
+      "missing": false,
+      "value": {
+        "version": 2,
+        "plugins": {}
+      },
+      "same": true,
+      "memorySame": true,
+      "logs": [
+        [
+          "Failed to load installed_plugins.json: JSON Parse error: Unrecognized token '﻿'. Starting with empty state.",
+          {
+            "level": "error"
+          }
+        ]
+      ],
+      "errors": [
+        {
+          "name": "SyntaxError",
+          "message": "JSON Parse error: Unrecognized token '﻿'"
+        }
+      ],
+      "effects": [],
+      "unchanged": true
+    }
+  ],
+  "pathCases": [
+    {
+      "base": "/base",
+      "id": "p@m",
+      "version": "1",
+      "path": "/base/cache/m/p/1"
+    },
+    {
+      "base": "missing/../base",
+      "id": "⚠️@😀",
+      "version": "1/😀",
+      "path": "base/cache/--/--/1---"
+    },
+    {
+      "base": "../../base",
+      "id": "p@m",
+      "version": "..",
+      "path": "../../base/cache/m"
+    },
+    {
+      "base": "/base",
+      "id": "@",
+      "version": "",
+      "path": "/base/cache/unknown/-"
+    },
+    {
+      "base": "/base",
+      "id": "a@b@c",
+      "version": ".",
+      "path": "/base/cache/b/a"
+    },
+    {
+      "base": "",
+      "id": "p",
+      "version": "v",
+      "path": "cache/unknown/p/v"
+    }
+  ],
+  "lifecycle": {
+    "beforeAdd": {
+      "cache": {
+        "version": 2,
+        "plugins": {}
+      },
+      "disk": {
+        "version": 2,
+        "plugins": {
+          "external@m": [
+            {
+              "scope": "user",
+              "installPath": "/external"
+            }
+          ]
+        }
+      },
+      "memory": {
+        "version": 2,
+        "plugins": {}
+      }
+    },
+    "afterAdd": {
+      "cache": {
+        "version": 2,
+        "plugins": {
+          "external@m": [
+            {
+              "scope": "user",
+              "installPath": "/external"
+            }
+          ],
+          "p@m": [
+            {
+              "scope": "project",
+              "installPath": "/new",
+              "version": "1",
+              "installedAt": "T",
+              "lastUpdated": "U",
+              "gitCommitSha": "sha",
+              "projectPath": "/current"
+            }
+          ]
+        }
+      },
+      "memory": {
+        "version": 2,
+        "plugins": {}
+      },
+      "oldMemorySame": true,
+      "newCache": true,
+      "raw": "{\n  \"version\": 2,\n  \"plugins\": {\n    \"external@m\": [\n      {\n        \"scope\": \"user\",\n        \"installPath\": \"/external\"\n      }\n    ],\n    \"p@m\": [\n      {\n        \"scope\": \"project\",\n        \"installPath\": \"/new\",\n        \"version\": \"1\",\n        \"installedAt\": \"T\",\n        \"lastUpdated\": \"U\",\n        \"gitCommitSha\": \"sha\",\n        \"projectPath\": \"/current\"\n      }\n    ]\n  }\n}"
+    },
+    "resetShares": true,
+    "clearCreatesNew": true
+  },
+  "scope": {
+    "data": {
+      "version": 2,
+      "plugins": {
+        "p@m": [
+          {
+            "scope": "user",
+            "installPath": "/new",
+            "version": "new",
+            "installedAt": "T"
+          },
+          {
+            "scope": "project",
+            "projectPath": "/other",
+            "installPath": "/other"
+          },
+          {
+            "scope": "user",
+            "installPath": "/new",
+            "version": "new",
+            "installedAt": "T"
+          },
+          {
+            "scope": "user",
+            "installPath": "/new",
+            "version": "new",
+            "installedAt": "T"
+          }
+        ]
+      }
+    },
+    "raw": "{\n  \"version\": 2,\n  \"plugins\": {\n    \"p@m\": [\n      {\n        \"scope\": \"user\",\n        \"installPath\": \"/new\",\n        \"version\": \"new\",\n        \"installedAt\": \"T\"\n      },\n      {\n        \"scope\": \"project\",\n        \"projectPath\": \"/other\",\n        \"installPath\": \"/other\"\n      },\n      {\n        \"scope\": \"user\",\n        \"installPath\": \"/new\",\n        \"version\": \"new\",\n        \"installedAt\": \"T\"\n      },\n      {\n        \"scope\": \"user\",\n        \"installPath\": \"/new\",\n        \"version\": \"new\",\n        \"installedAt\": \"T\"\n      }\n    ]\n  }\n}"
+  },
+  "predicates": [
+    {
+      "id": "user@m",
+      "installed": true,
+      "global": true
+    },
+    {
+      "id": "managed@m",
+      "installed": true,
+      "global": true
+    },
+    {
+      "id": "here@m",
+      "installed": true,
+      "global": false
+    },
+    {
+      "id": "elsewhere@m",
+      "installed": false,
+      "global": false
+    },
+    {
+      "id": "local@m",
+      "installed": true,
+      "global": false
+    },
+    {
+      "id": "absent@m",
+      "installed": false,
+      "global": false
+    },
+    {
+      "id": "empty@m",
+      "installed": false,
+      "global": false
+    }
+  ]
+}

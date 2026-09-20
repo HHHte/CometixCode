@@ -1,0 +1,13 @@
+[
+  {
+    "type": "mcpb-extract-failed",
+    "plugin": "demo"
+  },
+  {
+    "type": "mcp-server-suppressed-duplicate",
+    "plugin": "demo",
+    "source": "plugin:demo:duplicate",
+    "serverName": "duplicate",
+    "duplicateOf": "manual"
+  }
+]

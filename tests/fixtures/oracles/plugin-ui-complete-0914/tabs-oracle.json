@@ -1,0 +1,22 @@
+[
+  {
+    "name": "uncontrolled",
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026hPlugins  Discover   Installed\n\nbody A\u001b[?2026l\u001b[>0q\u001b[c",
+    "after": "\u001b[?2026hPlugins  Discover   Installed\n\nbody B\u001b[?2026l",
+    "events": []
+  },
+  {
+    "name": "controlled",
+    "initial": "\u001b[?2004h\u001b[?1004h\u001b[?2026hPlugins  Discover   Installed\n\nbody B\u001b[?2026l\u001b[>0q\u001b[c",
+    "after": "",
+    "events": [
+      "a"
+    ]
+  },
+  {
+    "name": "disabled",
+    "initial": "\u001b[?2026hPlugins  Discover   Installed\n\nbody A\u001b[?2026l",
+    "after": "",
+    "events": []
+  }
+]
