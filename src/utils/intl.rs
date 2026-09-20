@@ -1,15 +1,28 @@
 //! Maps to: CC `utils/intl.ts:10-51` (the shared segmenter functions).
-//! CC's cached Intl.Segmenter ≙ a cached locale/descriptor and a thread-local
-//! installed-ICU template through the official rust_icu crate defaults.
-//! ICU data versions can differ from Bun; parity is checked against its oracle.
-//! Iterators and their UTF-16 buffers stay on their own thread; each segment
-//! operation clones the template as JavaScriptCore IntlSegmenter::segment does.
+//!
+//! CC's cached `Intl.Segmenter` is JavaScriptCore's, which wraps the ICU the
+//! runtime was linked against. The Rust counterpart is ICU4X's `icu_segmenter`:
+//! the same UAX #29 rules plus the dictionary models for the scripts that need
+//! them (Chinese, Japanese, Khmer, Lao, Myanmar, Thai), compiled in as data
+//! rather than resolved against a library on the host.
+//!
+//! That choice is deliberate and it is a deviation worth naming. The previous
+//! implementation bound to the *installed* ICU through `rust_icu`, which made
+//! behaviour a function of whichever ICU the machine happened to carry — the
+//! tests below still record one such drift, where ICU 74 and ICU 78 disagree on
+//! the colon rule. Compiled data trades "matches whatever the host has" for
+//! "identical everywhere, including a Windows box with no ICU DLLs at all".
+//! ICU4X is already this project's ICU for collation (`icu_collator`), so this
+//! also collapses two ICU stacks into one.
+//!
+//! The segmenters are locale-invariant, so unlike the JSC path there is no
+//! process-locale lookup: UAX #29 word and grapheme rules do not vary by
+//! locale, and the dictionary models are selected by script, not by language.
 
-use std::cell::RefCell;
 use std::sync::OnceLock;
 
-use rust_icu_sys::{UBreakIteratorType, UWordBreak};
-use rust_icu_ubrk::UBreakIterator;
+use icu_segmenter::options::WordBreakInvariantOptions;
+use icu_segmenter::{GraphemeClusterSegmenter, WordSegmenter};
 
 /// Native representation of Intl.SegmentData; indices are UTF-8 byte offsets.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -19,97 +32,83 @@ pub struct Segment<'a> {
     pub is_word_like: Option<bool>,
 }
 
-/// Native runtime descriptor for Intl.Segmenter. Segmentation policy stays in ICU.
-#[derive(Debug)]
-pub struct Segmenter {
-    granularity: UBreakIteratorType,
-    locale: String,
+/// Which UAX #29 boundary set a [`Segmenter`] reports.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Granularity {
+    Grapheme,
+    Word,
 }
 
-thread_local! {
-    static WORD_TEMPLATE: RefCell<Option<UBreakIterator>> = const { RefCell::new(None) };
-    static GRAPHEME_TEMPLATE: RefCell<Option<UBreakIterator>> = const { RefCell::new(None) };
+/// Native runtime descriptor for Intl.Segmenter. Segmentation policy stays in
+/// ICU4X; this only selects which of the two shared segmenters to drive.
+#[derive(Debug)]
+pub struct Segmenter {
+    granularity: Granularity,
 }
 
 impl Segmenter {
     /// Native implementation of Intl.Segmenter.prototype.segment.
+    ///
+    /// ICU4X reports boundaries as UTF-8 byte offsets directly, so unlike the
+    /// JSC/ICU path there is no UTF-16 index to translate back.
+    ///
+    /// The segmenters are constructed here rather than cached in a `static`:
+    /// the `*Borrowed` constructors only take a reference to data already
+    /// compiled into the binary, and the borrowed handles are not `Sync`.
     pub fn segment<'a>(&self, text: &'a str) -> Vec<Segment<'a>> {
-        let template = match self.granularity {
-            UBreakIteratorType::UBRK_WORD => &WORD_TEMPLATE,
-            _ => &GRAPHEME_TEMPLATE,
-        };
-        let mut iterator = template.with(|cell| {
-            let mut template = cell.borrow_mut();
-            template
-                .get_or_insert_with(|| {
-                    UBreakIterator::try_new(self.granularity, &self.locale, "")
-                        .expect("Intl.Segmenter: ICU constructor failed")
-                })
-                .safe_clone()
-                .expect("Intl.Segmenter: ICU iterator clone failed")
-        });
-        iterator
-            .set_text(text)
-            .expect("Intl.Segmenter: ICU text conversion failed");
-
-        // ICU uses the same UTF-16 units as JS. This map changes representation,
-        // not boundaries; ICU never returns a break inside a surrogate pair.
-        let mut byte_offsets = Vec::with_capacity(text.encode_utf16().count() + 1);
-        for (byte, character) in text.char_indices() {
-            byte_offsets.extend(std::iter::repeat_n(byte, character.len_utf16()));
-        }
-        byte_offsets.push(text.len());
-        let mut start = iterator.first() as usize;
         let mut segments = Vec::new();
-        while let Some(end) = iterator.next() {
-            let end = end as usize;
-            let index = byte_offsets[start];
-            let status = iterator.get_rule_status();
-            segments.push(Segment {
-                segment: &text[index..byte_offsets[end]],
-                index,
-                // JSC IntlSegmentDataObject::create classifies the ICU
-                // NUMBER/LETTER/KANA/IDEO ranges; whitespace/emoji remain false.
-                is_word_like: (self.granularity == UBreakIteratorType::UBRK_WORD).then_some(
-                    status >= UWordBreak::UBRK_WORD_NUMBER as i32
-                        && status < UWordBreak::UBRK_WORD_IDEO_LIMIT as i32,
-                ),
-            });
-            start = end;
+        match self.granularity {
+            Granularity::Word => {
+                // `new_dictionary`, not `new_auto`. Both carry the dictionary
+                // for Chinese and Japanese, but `auto` switches Thai, Lao,
+                // Khmer and Burmese to the LSTM model, whose boundaries differ
+                // from ICU4C's — measured here as `กาแฟสวัสดี` coming back
+                // whole instead of splitting into `กาแฟ` / `สวัสดี`. The
+                // dictionary matches what CC's ICU produces.
+                let segmenter = WordSegmenter::new_dictionary(WordBreakInvariantOptions::default());
+                let mut iterator = segmenter.segment_str(text);
+                let mut start = match iterator.next() {
+                    Some(first) => first,
+                    None => return segments,
+                };
+                while let Some(end) = iterator.next() {
+                    segments.push(Segment {
+                        segment: &text[start..end],
+                        index: start,
+                        // Mirrors JSC IntlSegmentDataObject::create, which marks
+                        // the number/letter/kana/ideographic rule ranges as word
+                        // like and leaves whitespace and punctuation false.
+                        is_word_like: Some(iterator.is_word_like()),
+                    });
+                    start = end;
+                }
+            }
+            Granularity::Grapheme => {
+                let segmenter = GraphemeClusterSegmenter::new();
+                let mut iterator = segmenter.segment_str(text);
+                let mut start = match iterator.next() {
+                    Some(first) => first,
+                    None => return segments,
+                };
+                for end in iterator {
+                    segments.push(Segment {
+                        segment: &text[start..end],
+                        index: start,
+                        is_word_like: None,
+                    });
+                    start = end;
+                }
+            }
         }
         segments
     }
-}
-
-// Runtime locale adapter for Intl.Segmenter(undefined, ...). macOS reads the
-// same JSCOnly process-locale source as Bun; no caller-specific language policy.
-fn default_locale() -> &'static str {
-    static LOCALE: OnceLock<String> = OnceLock::new();
-    LOCALE.get_or_init(|| {
-        #[cfg(target_os = "macos")]
-        {
-            process_default_locale()
-        }
-        #[cfg(not(target_os = "macos"))]
-        {
-            let locale = rust_icu_uloc::get_default();
-            if matches!(locale.label(), "en_US_POSIX" | "c") {
-                "en-US".to_string()
-            } else {
-                locale
-                    .to_language_tag(false)
-                    .expect("Intl.Segmenter: default locale conversion failed")
-            }
-        }
-    })
 }
 
 /// Maps to: CC `utils/intl.ts:13-21` getGraphemeSegmenter.
 pub fn get_grapheme_segmenter() -> &'static Segmenter {
     static SEGMENTER: OnceLock<Segmenter> = OnceLock::new();
     SEGMENTER.get_or_init(|| Segmenter {
-        granularity: UBreakIteratorType::UBRK_CHARACTER,
-        locale: default_locale().to_string(),
+        granularity: Granularity::Grapheme,
     })
 }
 
@@ -139,91 +138,36 @@ pub fn last_grapheme(text: &str) -> &str {
 pub fn get_word_segmenter() -> &'static Segmenter {
     static SEGMENTER: OnceLock<Segmenter> = OnceLock::new();
     SEGMENTER.get_or_init(|| Segmenter {
-        granularity: UBreakIteratorType::UBRK_WORD,
-        locale: default_locale().to_string(),
+        granularity: Granularity::Word,
     })
-}
-
-// Bun's JSCOnly build selects WTF/unix/LanguageUnix.cpp, including on
-// macOS. It queries the process C locale, not ICU's environment-derived
-// default and not Cocoa's preferred languages.
-#[cfg(target_os = "macos")]
-fn process_default_locale() -> String {
-    // SAFETY: a null second argument only queries LC_CTYPE. Copy the
-    // returned C string immediately; this function never mutates locale.
-    let raw = unsafe { libc::setlocale(libc::LC_CTYPE, std::ptr::null()) };
-    let locale = if raw.is_null() {
-        String::new()
-    } else {
-        unsafe { std::ffi::CStr::from_ptr(raw) }
-            .to_string_lossy()
-            .into_owned()
-    };
-    let language = locale.split(['.', '@']).next().unwrap_or("");
-    if language.is_empty()
-        || language.eq_ignore_ascii_case("C")
-        || language.eq_ignore_ascii_case("POSIX")
-    {
-        "en-US".to_string()
-    } else {
-        language.replace('_', "-")
-    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    #[cfg(target_os = "macos")]
+    /// Segmentation must not vary with the process locale.
+    ///
+    /// The JSC path read the process C locale because `Intl.Segmenter(undefined)`
+    /// resolves one; ICU4X's segmenters are locale-invariant by construction, so
+    /// what used to be a locale-matching test is now an independence test. UAX #29
+    /// word rules do not vary by language, and the dictionary models are chosen by
+    /// script.
     #[test]
-    fn native_iterator_clone_retains_text_with_accepted_icu78_boundaries() {
-        // JSC IntlSegmenter.cpp:117-127: a clone owns a text lifetime separate
-        // from the cached template and from subsequent segment() calls.
-        let mut original =
-            UBreakIterator::try_new(UBreakIteratorType::UBRK_WORD, "en-US", "hello:world").unwrap();
-        let mut cloned = original.safe_clone().unwrap();
-        original.set_text("你好世界").unwrap();
-        drop(original);
-        assert_eq!(cloned.first(), 0);
-        let mut ends = Vec::new();
-        while let Some(end) = cloned.next() {
-            ends.push(end);
-        }
-        // Keep checking buffer ownership independently of the accepted ICU rule
-        // difference: Bun/ICU74 word ends [5, 6, 11], native ICU78 [11].
-        let retained_word_ends = ends;
-        cloned.set_text("A\0👩‍💻B").unwrap();
-        assert_eq!(cloned.first(), 0);
-        let mut ends = Vec::new();
-        while let Some(end) = cloned.next() {
-            ends.push(end);
-        }
-        assert_eq!(ends.last(), Some(&8));
-        cloned.set_text("").unwrap();
-        assert_eq!(cloned.first(), 0);
-        assert_eq!(cloned.next(), None);
-        // User-accepted ICU difference (2026-09-13); this is a fixed Rust
-        // expectation, not an expectation computed by the iterator under test.
-        assert_eq!(retained_word_ends, vec![11]);
+    fn word_segmentation_is_independent_of_the_process_locale() {
+        let baseline = describe(get_word_segmenter().segment("hello:world 你好世界"));
+        let _guard = crate::utils::env_utils::EnvVarGuard::set("LC_ALL", "ja_JP.UTF-8");
+        assert_eq!(
+            describe(get_word_segmenter().segment("hello:world 你好世界")),
+            baseline
+        );
     }
 
-    #[cfg(target_os = "macos")]
-    #[test]
-    fn default_locale_matches_jsc_with_accepted_icu78_word_boundaries() {
-        // Bun's JSCOnly LanguageUnix.cpp:33-38 queries the process C locale.
-        // A fresh process starts in C even when LC_ALL advertises another locale.
-        let _guard = crate::utils::env_utils::EnvVarGuard::set("LC_ALL", "ja_JP.UTF-8");
-        assert_eq!(process_default_locale(), "en-US");
-        let segments = get_word_segmenter().segment("hello:world");
-        // Accepted ICU78 colon rule: Bun/ICU74 yields hello / : / world.
-        // Locale selection itself must still match JSC above.
-        assert_eq!(
-            segments
-                .iter()
-                .map(|part| (part.segment, part.index, part.is_word_like))
-                .collect::<Vec<_>>(),
-            vec![("hello:world", 0, Some(true))]
-        );
+    fn describe(segments: Vec<Segment<'_>>) -> Vec<(String, usize, Option<bool>)> {
+        segments
+            .into_iter()
+            .map(|part| (part.segment.to_string(), part.index, part.is_word_like))
+            .collect()
     }
 
     #[test]

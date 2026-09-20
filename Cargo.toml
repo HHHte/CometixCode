@@ -2,7 +2,7 @@
 name = "cometix-code"
 version = "0.2.0"
 edition = "2024"
-rust-version = "1.87"
+rust-version = "1.88"
 description = "A terminal-based AI coding assistant — 1:1 TUI clone of Claude Code"
 license = "AGPL-3.0-only"
 
@@ -41,10 +41,9 @@ mcp_runtime = [
 [dependencies]
 # Source strip-ansi import used by staticRender/exportRenderer.
 strip-ansi-escapes = "0.2.1"
-# Official rust_icu bindings; use the installed ICU through pkg-config.
-rust_icu_ubrk = "=5.8.0"
-rust_icu_uloc = "=5.8.0"
-rust_icu_sys = "=5.8.0"
+# UAX #29 segmentation with compiled-in data, including the dictionary models
+# for Chinese, Japanese, Khmer, Lao, Myanmar and Thai. No system ICU.
+icu_segmenter = { version = "2.3.0", features = ["auto"] }
 # iocraft fork carrying the CC Ink parity primitives (row-level diff, event
 # propagation, SIGCONT self-healing, IME cursor, bracketed paste, grid layout).
 iocraft = { git = "https://github.com/Haleclipse/CometixTUI", features = ["unstable-output-streams"] }
@@ -145,6 +144,15 @@ rmcp = { version = "2.1.0", default-features = false, optional = true, features 
 # enable rustls-platform-verifier, which panics without JNI context.
 # Desktop: rustls-no-provider + ring (installed by utils/tls_provider.rs). Keep anthropic-sdk
 # on rustls-no-provider too — reqwest feature "rustls" would union aws-lc-sys.
+
+# CC `asciicast.ts:118-125` reads `process.stdout.columns/rows`, which Node
+# services with ioctl(TIOCGWINSZ) on Unix and GetConsoleScreenBufferInfo on
+# Windows. utils/asciicast.rs calls libc directly for the first; the second
+# comes from crossterm, whose Windows backend is that same console call.
+# Declared only for the targets that compile the `cfg(not(unix))` arm — the
+# crate is already in the tree through iocraft, so this costs no extra build.
+[target.'cfg(not(unix))'.dependencies]
+crossterm = "0.29"
 
 [target.'cfg(target_os = "android")'.dependencies]
 reqwest = { version = "0.13", default-features = false, features = ["json", "stream", "native-tls"] }

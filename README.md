@@ -33,22 +33,9 @@ permissions, MCP and slash commands are implemented; other areas are partial.
 
 ### Prerequisites
 
-- **Rust 1.87+** (edition 2024)
-- **ICU4C** — the `rust_icu_*` crates bind to it through `pkg-config`
-
-On macOS, ICU4C is keg-only, so its `pkgconfig` directory has to be on the
-search path:
-
-```sh
-brew install icu4c
-export PKG_CONFIG_PATH="$(brew --prefix icu4c)/lib/pkgconfig"
-```
-
-On Debian/Ubuntu:
-
-```sh
-sudo apt install libicu-dev pkg-config
-```
+**Rust 1.88+** (edition 2024). Nothing else — no system libraries, no
+`pkg-config`. Unicode segmentation and collation come from ICU4X, whose data
+is compiled into the binary.
 
 ### Build and run
 
@@ -58,6 +45,17 @@ cargo run --release
 ```
 
 The binary is `cometix`.
+
+### Cross-compiling for Windows
+
+```sh
+rustup target add x86_64-pc-windows-gnu
+cargo build --release --target x86_64-pc-windows-gnu
+```
+
+A mingw-w64 toolchain has to be on `PATH`: four dependencies compile C or
+assembly (`onig_sys`, `ring`, `tree-sitter`, `tree-sitter-bash`). They link
+statically, so the resulting `.exe` needs no DLLs alongside it.
 
 ## ripgrep
 
@@ -98,12 +96,12 @@ behind that.
 
 ## Acknowledgements
 
-- **[Anthropic]** — for Claude Code, the program this reimplements. Every
-  behaviour here was derived from studying it; the design credit is theirs.
-- **[iocraft]** by ccbrown — the React-style retained-mode TUI framework this is
-  built on. [CometixTUI] is a fork of it.
-- **[ripgrep]** by BurntSushi — the file search every `Grep`, `Glob` and
-  discovery path shells out to.
+- **[ClaudeCodeRev]** — the analysis work this port reads from. Every behaviour
+  here was derived from studying Claude Code through it.
+- **[CometixTUI]** — the TUI framework this is built on, an iocraft fork
+  carrying the Ink parity primitives the port needs.
+- **[marked-rs]** — Rust port of `marked`, which CC uses to parse Markdown.
+- **[anthropic-sdk-rs]** — Rust port of `@anthropic-ai/sdk`, the API client.
 - **[nucleo]** by the Helix editor project — the fuzzy matcher behind file,
   command and agent completion.
 
@@ -111,11 +109,8 @@ behind that.
 
 [AGPL-3.0-only](LICENSE).
 
-Note the network clause: if you run a modified version as a network service,
-its users are entitled to the modified source.
-
 [CometixTUI]: https://github.com/Haleclipse/CometixTUI
-[Anthropic]: https://www.anthropic.com
-[iocraft]: https://github.com/ccbrown/iocraft
-[ripgrep]: https://github.com/BurntSushi/ripgrep
+[ClaudeCodeRev]: https://github.com/Haleclipse/ClaudeCodeRev
+[marked-rs]: https://github.com/Haleclipse/marked-rs
+[anthropic-sdk-rs]: https://github.com/Haleclipse/anthropic-sdk-rs
 [nucleo]: https://github.com/helix-editor/nucleo

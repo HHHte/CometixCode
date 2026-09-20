@@ -28,32 +28,21 @@ iocraft 复刻它 —— 那是一个 React 风格的保留模式 TUI 框架，�
 
 ## 构建
 
-### 前置依赖
-
-- **Rust 1.87+**（edition 2024）
-- **ICU4C** —— `rust_icu_*` 系列 crate 通过 `pkg-config` 绑定它
-
-在 macOS 上 ICU4C 是 keg-only 的，需要把它的 `pkgconfig` 目录加入搜索路径：
-
-```sh
-brew install icu4c
-export PKG_CONFIG_PATH="$(brew --prefix icu4c)/lib/pkgconfig"
-```
-
-在 Debian/Ubuntu 上：
-
-```sh
-sudo apt install libicu-dev pkg-config
-```
-
-### 构建与运行
-
 ```sh
 cargo build --release
 cargo run --release
 ```
 
 可执行文件名为 `cometix`。
+
+### 交叉编译 Windows 版
+
+需要 mingw-w64 工具链。
+
+```sh
+rustup target add x86_64-pc-windows-gnu
+cargo build --release --target x86_64-pc-windows-gnu
+```
 
 ## ripgrep
 
@@ -92,23 +81,20 @@ just check         # 仅做类型/借用检查，不链接
 
 ## 致谢
 
-- **[Anthropic]** —— 感谢 Claude Code，本项目复刻的对象。这里的每一处行为都源自
-  对它的研读，设计上的功劳属于他们。
-- **[iocraft]**（作者 ccbrown）—— 本项目所基于的 React 风格保留模式 TUI 框架，
-  [CometixTUI] 是它的 fork。
-- **[ripgrep]**（作者 BurntSushi）—— `Grep`、`Glob` 以及各条文件发现路径最终调用
-  的搜索工具。
+- **[ClaudeCodeRev]** —— 本移植所依据的分析工作。这里的每一处行为，都源自经由它
+  对 Claude Code 的研读。
+- **[CometixTUI]** —— 本项目所基于的 TUI 框架，一个携带了 Ink 对齐原语的
+  iocraft fork。
+- **[marked-rs]** —— `marked` 的 Rust 移植，CC 用它解析 Markdown。
+- **[anthropic-sdk-rs]** —— `@anthropic-ai/sdk` 的 Rust 移植，即 API 客户端。
 - **[nucleo]**（来自 Helix 编辑器项目）—— 文件、命令与 agent 补全背后的模糊匹配器。
 
 ## 许可
 
 [AGPL-3.0-only](LICENSE)。
 
-请注意其网络条款：如果你把修改后的版本作为网络服务运行，其使用者有权获得修改后的
-源码。
-
 [CometixTUI]: https://github.com/Haleclipse/CometixTUI
-[Anthropic]: https://www.anthropic.com
-[iocraft]: https://github.com/ccbrown/iocraft
-[ripgrep]: https://github.com/BurntSushi/ripgrep
+[ClaudeCodeRev]: https://github.com/Haleclipse/ClaudeCodeRev
+[marked-rs]: https://github.com/Haleclipse/marked-rs
+[anthropic-sdk-rs]: https://github.com/Haleclipse/anthropic-sdk-rs
 [nucleo]: https://github.com/helix-editor/nucleo
