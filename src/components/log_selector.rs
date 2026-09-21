@@ -19,7 +19,6 @@ use crate::utils::theme::Theme;
 use iocraft::prelude::*;
 use nucleo_matcher::pattern::{AtomKind, CaseMatching, Normalization, Pattern};
 use nucleo_matcher::{Config, Matcher, Utf32Str};
-use std::cmp::Ordering;
 use std::collections::HashSet;
 use std::io::{Read, Seek, SeekFrom};
 use std::path::Path;
@@ -687,27 +686,24 @@ fn fuse_like_score(text: &str, query_lower: &str) -> Option<f64> {
     .search_in(text)
 }
 
+/// Timestamp bucket used for deep-search ranking ties, in milliseconds.
+fn deep_search_modified_bucket(time: std::time::SystemTime) -> u128 {
+    time.duration_since(std::time::UNIX_EPOCH)
+        .map(|duration| duration.as_millis())
+        .unwrap_or(0)
+        / DATE_TIE_THRESHOLD_MS
+}
+
 fn sort_deep_search_matches(matches: &mut [DeepSearchMatch]) {
+    // Timestamps are bucketed before comparing so the relation stays
+    // transitive: a raw `date_diff_ms > threshold` gate is not (a≈b, b≈c but
+    // a!≈c), and Rust's `sort_by` aborts on comparators that do not define a
+    // total order. Within a bucket the score decides; newer timestamps break
+    // exact ties and order elements across buckets.
     matches.sort_by(|a, b| {
-        let date_diff_ms = if a.modified >= b.modified {
-            a.modified
-                .duration_since(b.modified)
-                .map(|duration| duration.as_millis())
-                .unwrap_or(0)
-        } else {
-            b.modified
-                .duration_since(a.modified)
-                .map(|duration| duration.as_millis())
-                .unwrap_or(0)
-        };
-
-        if date_diff_ms > DATE_TIE_THRESHOLD_MS {
-            return b.modified.cmp(&a.modified);
-        }
-
-        a.score
-            .partial_cmp(&b.score)
-            .unwrap_or(Ordering::Equal)
+        deep_search_modified_bucket(b.modified)
+            .cmp(&deep_search_modified_bucket(a.modified))
+            .then_with(|| a.score.total_cmp(&b.score))
             .then_with(|| b.modified.cmp(&a.modified))
     });
 }
@@ -2172,6 +2168,44 @@ mod tests {
         ];
         sort_deep_search_matches(&mut same_minute);
         assert_eq!(same_minute[0].log_key, "older-exact");
+    }
+
+    #[test]
+    fn deep_search_ranking_does_not_cycle_across_the_date_tie_window() {
+        // Regression: the raw threshold gate admitted a<b<c<a cycles
+        // (scores ascending while timestamps cross the tie window), which
+        // made Rust's stable sort abort with "comparison function does not
+        // correctly implement a total order".
+        let mut matches = vec![
+            DeepSearchMatch {
+                log_key: "x".to_string(),
+                score: 0.0,
+                modified: SystemTime::UNIX_EPOCH + Duration::from_secs(0),
+                snippet: None,
+            },
+            DeepSearchMatch {
+                log_key: "y".to_string(),
+                score: 0.1,
+                modified: SystemTime::UNIX_EPOCH + Duration::from_secs(50),
+                snippet: None,
+            },
+            DeepSearchMatch {
+                log_key: "z".to_string(),
+                score: 0.2,
+                modified: SystemTime::UNIX_EPOCH + Duration::from_secs(110),
+                snippet: None,
+            },
+        ];
+        sort_deep_search_matches(&mut matches);
+        // z is a full bucket newer, so it leads; x/y share a bucket and are
+        // ordered by score.
+        assert_eq!(
+            matches
+                .iter()
+                .map(|entry| entry.log_key.as_str())
+                .collect::<Vec<_>>(),
+            ["z", "x", "y"]
+        );
     }
 
     #[test]
