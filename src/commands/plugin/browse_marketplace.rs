@@ -162,7 +162,11 @@ pub fn BrowseMarketplace(
                     let installed_count=entries.iter().filter(|entry|is_plugin_installed(&create_plugin_id(entry["name"].as_str().unwrap_or(""),&marketplace.name))).count();
                     infos.push(MarketplaceInfo{name:marketplace.name.clone(),total_plugins:entries.len(),installed_count,source:get_marketplace_source_display(&marketplace.config["source"])});
                 }}
-                infos.sort_by(|a,b|{if a.name=="claude-plugin-directory"{std::cmp::Ordering::Less}else if b.name=="claude-plugin-directory"{std::cmp::Ordering::Greater}else{std::cmp::Ordering::Equal}});
+                // Pin the built-in marketplace first; everything else keeps
+                // the loader order. Pairwise special-name checks stay
+                // antisymmetric when both entries are the built-in one,
+                // unlike the previous `if a.name == … { Less }` form.
+                infos.sort_by(|a,b|match (a.name=="claude-plugin-directory",b.name=="claude-plugin-directory"){(true,false)=>std::cmp::Ordering::Less,(false,true)=>std::cmp::Ordering::Greater,_=>std::cmp::Ordering::Equal});
                 marketplaces.set(infos.clone());
                 if let Some(problem)=format_marketplace_loading_errors(&loaded.failures,loaded.marketplaces.iter().filter(|m|m.data.is_some()).count()){
                     match problem.r#type{MarketplaceLoadingErrorType::Warning=>warning.set(Some(format!("{}. Showing available marketplaces.",problem.message))),MarketplaceLoadingErrorType::Error=>anyhow::bail!(problem.message)}
@@ -241,26 +245,23 @@ pub fn BrowseMarketplace(
                         if cancelled.load(std::sync::atomic::Ordering::SeqCst) {
                             return Ok(());
                         }
-                        let sort_failed=std::cell::Cell::new(false);
-                plugins.sort_by(|a,b| {
-                    let a_raw=counts.as_ref().and_then(|c|c.get(&a.plugin_id)).filter(|v|!v.is_null());
-                    let b_raw=counts.as_ref().and_then(|c|c.get(&b.plugin_id)).filter(|v|!v.is_null());
-                    let equal=match (a_raw,b_raw){
-                        (None,None)=>true,
-                        (None,Some(v))|(Some(v),None)=>v.kind==11&&v.number==Some(0.0),
-                        (Some(a),Some(b)) if a.kind==b.kind=>match a.kind{8|9=>true,10=>a.string_units==b.string_units,11=>a.number.zip(b.number).is_some_and(|(a,b)|a==b),_=>std::ptr::eq(a,b)},
-                        _=>false,
-                    };
-                    if !equal {
-                        let a_number=a_raw.map_or(0.0,|v|v.to_number().unwrap_or_else(|_|{sort_failed.set(true);f64::NAN}));
-                        let b_number=b_raw.map_or(0.0,|v|v.to_number().unwrap_or_else(|_|{sort_failed.set(true);f64::NAN}));
-                        (b_number-a_number).partial_cmp(&0.0).unwrap_or(std::cmp::Ordering::Equal)
-                    } else {crate::tools::grep_tool::javascript_locale_compare(a.entry["name"].as_str().unwrap_or(""),b.entry["name"].as_str().unwrap_or(""))}
-                });
-                if sort_failed.get(){
-                    crate::utils::debug::log_for_debugging("Failed to fetch install counts: Cannot convert object to primitive value");
-                    plugins.sort_by(|a,b|crate::tools::grep_tool::javascript_locale_compare(a.entry["name"].as_str().unwrap_or(""),b.entry["name"].as_str().unwrap_or("")));
-                }
+                        // Counts are resolved before sorting: returning
+                        // `Ordering::Equal` for NaN pairs while ordering
+                        // other pairs numerically is not a total order and
+                        // made Rust's `sort_by` abort. Unusable values fall
+                        // back to the source's all-names ordering.
+                        let install_count=plugins.iter().map(|plugin|{
+                            let number=counts.as_ref().and_then(|counts|counts.get(&plugin.plugin_id)).filter(|value|!value.is_null()).map_or(Some(0.0),|value|value.to_number().ok().filter(|number|number.is_finite()));
+                            (plugin.plugin_id.clone(),number)
+                        }).collect::<std::collections::HashMap<_,_>>();
+                        let counts_usable=install_count.values().all(Option::is_some);
+                        if counts_usable {
+                            let number_for=|plugin:&InstallablePlugin|install_count.get(&plugin.plugin_id).copied().flatten().unwrap_or(0.0);
+                            plugins.sort_by(|a,b|number_for(b).total_cmp(&number_for(a)).then_with(||crate::tools::grep_tool::javascript_locale_compare(a.entry["name"].as_str().unwrap_or(""),b.entry["name"].as_str().unwrap_or(""))));
+                        } else {
+                            crate::utils::debug::log_for_debugging("Failed to fetch install counts: Cannot convert object to primitive value");
+                            plugins.sort_by(|a,b|crate::tools::grep_tool::javascript_locale_compare(a.entry["name"].as_str().unwrap_or(""),b.entry["name"].as_str().unwrap_or("")));
+                        }
                         install_counts.set(counts);
                         available_plugins.set(plugins);
                         selected_index.set(0);
