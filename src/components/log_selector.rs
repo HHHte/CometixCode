@@ -19,6 +19,7 @@ use crate::utils::theme::Theme;
 use iocraft::prelude::*;
 use nucleo_matcher::pattern::{AtomKind, CaseMatching, Normalization, Pattern};
 use nucleo_matcher::{Config, Matcher, Utf32Str};
+use std::cmp::Ordering;
 use std::collections::HashSet;
 use std::io::{Read, Seek, SeekFrom};
 use std::path::Path;
@@ -686,24 +687,31 @@ fn fuse_like_score(text: &str, query_lower: &str) -> Option<f64> {
     .search_in(text)
 }
 
-/// Timestamp bucket used for deep-search ranking ties, in milliseconds.
-fn deep_search_modified_bucket(time: std::time::SystemTime) -> u128 {
-    time.duration_since(std::time::UNIX_EPOCH)
-        .map(|duration| duration.as_millis())
-        .unwrap_or(0)
-        / DATE_TIE_THRESHOLD_MS
-}
-
 fn sort_deep_search_matches(matches: &mut [DeepSearchMatch]) {
-    // Timestamps are bucketed before comparing so the relation stays
-    // transitive: a raw `date_diff_ms > threshold` gate is not (a≈b, b≈c but
-    // a!≈c), and Rust's `sort_by` aborts on comparators that do not define a
-    // total order. Within a bucket the score decides; newer timestamps break
-    // exact ties and order elements across buckets.
-    matches.sort_by(|a, b| {
-        deep_search_modified_bucket(b.modified)
-            .cmp(&deep_search_modified_bucket(a.modified))
-            .then_with(|| a.score.total_cmp(&b.score))
+    // CC `LogSelector.tsx:439-447` — the `> DATE_TIE_THRESHOLD_MS` gate is not
+    // a total order (a≈b, b≈c but a̸≈c across the window). Kept verbatim, so
+    // the sort goes through the non-validating JS-sort primitive; `sort_by`
+    // panics on comparators like this (see `utils/js_sort.rs`; mirror PR #7).
+    crate::utils::js_sort::sort_by(matches, |a, b| {
+        let date_diff_ms = if a.modified >= b.modified {
+            a.modified
+                .duration_since(b.modified)
+                .map(|duration| duration.as_millis())
+                .unwrap_or(0)
+        } else {
+            b.modified
+                .duration_since(a.modified)
+                .map(|duration| duration.as_millis())
+                .unwrap_or(0)
+        };
+
+        if date_diff_ms > DATE_TIE_THRESHOLD_MS {
+            return b.modified.cmp(&a.modified);
+        }
+
+        a.score
+            .partial_cmp(&b.score)
+            .unwrap_or(Ordering::Equal)
             .then_with(|| b.modified.cmp(&a.modified))
     });
 }
@@ -2170,12 +2178,16 @@ mod tests {
         assert_eq!(same_minute[0].log_key, "older-exact");
     }
 
+    /// Regression for the release SIGABRT (mirror PR #7): the verbatim
+    /// `> DATE_TIE_THRESHOLD_MS` gate admits ordering cycles when scores rise
+    /// while timestamps cross the window (x≈y, y≈z within 60s, x̸≈z beyond),
+    /// which `slice::sort_by` rejects as not a total order. The sort routes
+    /// through `js_sort::sort_by`; this test drives the former-cycle triple
+    /// through it. The asserted order is the deterministic merge outcome of
+    /// the OFFICIAL comparator: x/y are within the window (score decides,
+    /// x first), z is over the window against both (newest first).
     #[test]
-    fn deep_search_ranking_does_not_cycle_across_the_date_tie_window() {
-        // Regression: the raw threshold gate admitted a<b<c<a cycles
-        // (scores ascending while timestamps cross the tie window), which
-        // made Rust's stable sort abort with "comparison function does not
-        // correctly implement a total order".
+    fn deep_search_ranking_survives_a_cycle_across_the_date_tie_window() {
         let mut matches = vec![
             DeepSearchMatch {
                 log_key: "x".to_string(),
@@ -2197,8 +2209,6 @@ mod tests {
             },
         ];
         sort_deep_search_matches(&mut matches);
-        // z is a full bucket newer, so it leads; x/y share a bucket and are
-        // ordered by score.
         assert_eq!(
             matches
                 .iter()

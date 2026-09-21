@@ -776,18 +776,17 @@ pub fn ManagePlugins(
                                     groups.entry(marketplace).or_default().push(plugin);
                                 }
                                 let mut groups = groups.into_iter().collect::<Vec<_>>();
-                                groups.sort_by(|(a, _), (b, _)| {
-                                    // Pairwise match keeps the relation
-                                    // antisymmetric when both names are the
-                                    // built-in one; the previous first-match
-                                    // form returned `Less` in both directions.
-                                    match (
-                                        a == "claude-plugin-directory",
-                                        b == "claude-plugin-directory",
-                                    ) {
-                                        (true, false) => std::cmp::Ordering::Less,
-                                        (false, true) => std::cmp::Ordering::Greater,
-                                        _ => crate::tools::grep_tool::javascript_locale_compare(a, b),
+                                // First-match pinning verbatim per source; not
+                                // antisymmetric, so it sorts through the
+                                // non-validating JS-sort primitive
+                                // (utils/js_sort.rs; mirror PR #7).
+                                crate::utils::js_sort::sort_by(&mut groups, |(a, _), (b, _)| {
+                                    if a == "claude-plugin-directory" {
+                                        std::cmp::Ordering::Less
+                                    } else if b == "claude-plugin-directory" {
+                                        std::cmp::Ordering::Greater
+                                    } else {
+                                        crate::tools::grep_tool::javascript_locale_compare(a, b)
                                     }
                                 });
                                 let marketplaces = groups.iter().map(|(m, _)| m.clone()).collect();

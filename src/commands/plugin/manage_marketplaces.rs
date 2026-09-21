@@ -32,22 +32,6 @@ pub struct ManageMarketplacesProps {
     pub target_marketplace: Option<String>,
     pub action: Option<String>,
 }
-/// The built-in marketplace pinned to the top of the list.
-const BUILT_IN_MARKETPLACE: &str = "claude-plugin-directory";
-
-/// Pins `claude-plugin-directory` first, then locale order. Comparing the
-/// pair keeps the relation antisymmetric when both names are the special one
-/// (the previous `if a.name == … { Less }` form returned `Less` in both
-/// directions for such pairs, which is not a valid total order for Rust's
-/// `sort_by`).
-fn compare_marketplace_names(left: &str, right: &str) -> std::cmp::Ordering {
-    match (left == BUILT_IN_MARKETPLACE, right == BUILT_IN_MARKETPLACE) {
-        (true, false) => std::cmp::Ordering::Less,
-        (false, true) => std::cmp::Ordering::Greater,
-        _ => crate::tools::grep_tool::javascript_locale_compare(left, right),
-    }
-}
-
 /// Maps to: CC `commands/plugin/ManageMarketplaces.tsx:58-67#MarketplaceState`.
 #[derive(Clone, Debug, Default)]
 struct MarketplaceState {
@@ -147,7 +131,8 @@ pub fn ManageMarketplaces(
                     let installed_plugins=all_plugins.iter().filter(|p|p.source.ends_with(&format!("@{}",market.name))).cloned().collect();
                     new_states.push(MarketplaceState{name:market.name.clone(),source:get_marketplace_source_display(&market.config["source"]),last_updated:market.config["lastUpdated"].as_str().map(str::to_owned),plugin_count:market.data.as_ref().and_then(|d|d["plugins"].as_array()).map(Vec::len),installed_plugins,pending_update:false,pending_remove:false,auto_update:is_marketplace_auto_update(&market.name,&market.config)});
                 }
-                new_states.sort_by(|a,b|compare_marketplace_names(&a.name,&b.name));
+                // CC `ManageMarketplaces.tsx:320-325` verbatim: first-match pinning is not antisymmetric, so the sort goes through the non-validating JS-sort primitive (utils/js_sort.rs; mirror PR #7).
+                crate::utils::js_sort::sort_by(&mut new_states,|a,b|{if a.name=="claude-plugin-directory"{std::cmp::Ordering::Less}else if b.name=="claude-plugin-directory"{std::cmp::Ordering::Greater}else{crate::tools::grep_tool::javascript_locale_compare(&a.name,&b.name)}});
                 marketplace_states.set(new_states.clone());
                 if was_in_details_view {if let Some(selected)=selected {if let Some(updated)=new_states.iter().find(|s|s.name==selected.name){selected_marketplace.set(Some(updated.clone()));}}}
                 let mut actions=Vec::new();
@@ -188,7 +173,8 @@ pub fn ManageMarketplaces(
                     let installed_plugins=all_plugins.iter().filter(|p|p.source.ends_with(&format!("@{}",market.name))).cloned().collect();
                     states.push(MarketplaceState{name:market.name.clone(),source:get_marketplace_source_display(&market.config["source"]),last_updated:market.config["lastUpdated"].as_str().map(str::to_owned),plugin_count:market.data.as_ref().and_then(|d|d["plugins"].as_array()).map(Vec::len),installed_plugins,pending_update:false,pending_remove:false,auto_update:is_marketplace_auto_update(&market.name,&market.config)});
                 }
-                states.sort_by(|a,b|compare_marketplace_names(&a.name,&b.name));
+                // CC `ManageMarketplaces.tsx:127-132` verbatim: same non-antisymmetric pinning as above, same JS-sort routing.
+                crate::utils::js_sort::sort_by(&mut states,|a,b|{if a.name=="claude-plugin-directory"{std::cmp::Ordering::Less}else if b.name=="claude-plugin-directory"{std::cmp::Ordering::Greater}else{crate::tools::grep_tool::javascript_locale_compare(&a.name,&b.name)}});
                 marketplace_states.set(states.clone());
                 if let Some(error)=format_marketplace_loading_errors(&loaded.failures,success_count){if error.r#type==MarketplaceLoadingErrorType::Warning{process_error.set(Some(error.message));}else{anyhow::bail!(error.message);}}
                 if let Some(target)=target.filter(|s|!s.is_empty()) {if !*has_attempted_auto_action.read() && error.as_deref().is_none_or(str::is_empty){
@@ -620,29 +606,6 @@ mod tests {
     use super::*;
     use futures::StreamExt;
     use std::time::Duration;
-
-    #[test]
-    fn marketplace_name_comparison_is_antisymmetric_for_builtin_duplicates() {
-        use std::cmp::Ordering;
-        // Pairs where both names are the built-in marketplace used to
-        // compare `Less` in both directions, which is not a valid total
-        // order for Rust's `sort_by`.
-        assert_eq!(
-            compare_marketplace_names("claude-plugin-directory", "claude-plugin-directory"),
-            Ordering::Equal
-        );
-        assert_eq!(
-            compare_marketplace_names("claude-plugin-directory", "zeta"),
-            Ordering::Less
-        );
-        assert_eq!(
-            compare_marketplace_names("zeta", "claude-plugin-directory"),
-            Ordering::Greater
-        );
-        assert_eq!(compare_marketplace_names("alpha", "beta"), Ordering::Less);
-        assert_eq!(compare_marketplace_names("beta", "alpha"), Ordering::Greater);
-        assert_eq!(compare_marketplace_names("alpha", "alpha"), Ordering::Equal);
-    }
 
     #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
     async fn mounted_marketplace_pending_cancel_remove_cancel_and_details() {

@@ -16,12 +16,6 @@ use std::sync::OnceLock;
 
 const COMMAND_FUSE_THRESHOLD: f64 = 0.3;
 const MAX_RECENTLY_USED_COMMANDS: usize = 5;
-/// Score band width under which command suggestions are considered tied and
-/// ordered by usage. Quantizing the band is what keeps the comparator a total
-/// order: a raw `|score_diff| > band` gate is not transitive (a≈b, b≈c but
-/// a<c), and Rust's `sort_by` aborts on such comparators while JS's
-/// `Array.sort` silently tolerated them.
-const COMMAND_SCORE_TIE_BAND: f64 = 0.1;
 
 use crate::components::prompt_input::prompt_input_footer_suggestions::SuggestionItem;
 
@@ -362,7 +356,13 @@ fn command_matches_for_query<'a>(
             .partial_cmp(&right.score)
             .unwrap_or(Ordering::Equal)
     });
-    matches.sort_by(|left, right| compare_command_matches(left, right, query));
+    // The comparator's `|scoreDiff| > 0.1` gate (:467-469) is not a total
+    // order — kept verbatim per source, so the sort must go through the
+    // non-validating JS-sort primitive instead of `slice::sort_by`, which
+    // panics on it (see `utils/js_sort.rs`; mirror PR #7).
+    crate::utils::js_sort::sort_by(&mut matches, |left, right| {
+        compare_command_matches(left, right, query)
+    });
     matches
 }
 
@@ -643,16 +643,18 @@ fn compare_command_matches(
         _ => {}
     }
 
-    // Quantize the score into bands so the relation stays transitive: scores
-    // in the same band are ordered by usage (higher first), anything else by
-    // the band itself (lower/better score first). Exact score is not used as
-    // a tiebreaker inside a band, mirroring the source's "near-tie goes to
-    // usage" intent.
-    let left_band = (left.score / COMMAND_SCORE_TIE_BAND).floor() as i64;
-    let right_band = (right.score / COMMAND_SCORE_TIE_BAND).floor() as i64;
-    left_band
-        .cmp(&right_band)
-        .then_with(|| right.usage.total_cmp(&left.usage))
+    let score_diff = left.score - right.score;
+    if score_diff.abs() > 0.1 {
+        return left
+            .score
+            .partial_cmp(&right.score)
+            .unwrap_or(Ordering::Equal);
+    }
+
+    right
+        .usage
+        .partial_cmp(&left.usage)
+        .unwrap_or(Ordering::Equal)
 }
 
 /// Maps to: CC `commandSuggestions.ts:552-569#findSlashCommandPositions`.
@@ -704,6 +706,59 @@ mod tests {
 
     fn commands() -> Vec<Command> {
         crate::commands::declared_commands_for_tests()
+    }
+
+    /// Regression for the release SIGABRT (mirror PR #7): the verbatim
+    /// `|scoreDiff| > 0.1` gate of `compare_command_matches` admits ordering
+    /// cycles (a<b<c<a), which `slice::sort_by` rejects with "user-provided
+    /// comparison function does not correctly implement a total order". The
+    /// suggestion path therefore sorts through `js_sort::sort_by`; this test
+    /// pins that routing by driving the exact former-cycle values plus a
+    /// pseudo-random sweep through the real comparator.
+    #[test]
+    fn near_tie_scores_sort_without_panicking_like_a_js_engine() {
+        let all = commands();
+        let command = all.first().expect("at least one declared command");
+        let entry = CommandSearchEntry {
+            command_index: 0,
+            command_name: "alpha".to_string(),
+            parts: Vec::new(),
+            aliases: Vec::new(),
+            description_words: Vec::new(),
+        };
+        let matched = |score: f64, usage: f64| CommandSuggestionMatch {
+            command,
+            entry: &entry,
+            matched_alias: None,
+            score,
+            usage,
+        };
+
+        // The documented former cycle: 0.12/10.0 < 0.06/5.0 < 0.00/0.0 < 0.12/10.0.
+        let mut cycle = vec![matched(0.12, 10.0), matched(0.06, 5.0), matched(0.0, 0.0)];
+        crate::utils::js_sort::sort_by(&mut cycle, |left, right| {
+            compare_command_matches(left, right, "zz")
+        });
+        assert_eq!(cycle.len(), 3);
+
+        // Pseudo-random near-tie sweep (xorshift32), the load that crashed
+        // `sort_by` on most seeds. Output must always be a permutation.
+        let mut state = 42u32;
+        let mut next = move || {
+            state ^= state << 13;
+            state ^= state >> 17;
+            state ^= state << 5;
+            state
+        };
+        for _ in 0..50 {
+            let mut rows: Vec<CommandSuggestionMatch<'_>> = (0..64)
+                .map(|_| matched((next() % 40) as f64 * 0.01, (next() % 11) as f64))
+                .collect();
+            crate::utils::js_sort::sort_by(&mut rows, |left, right| {
+                compare_command_matches(left, right, "zz")
+            });
+            assert_eq!(rows.len(), 64);
+        }
     }
 
     #[test]
@@ -827,104 +882,6 @@ mod tests {
         assert!(find_mid_input_slash_command("explain /help now", 15).is_none());
         assert!(find_mid_input_slash_command("prefix/help", 11).is_none());
         assert!(find_mid_input_slash_command("/help", 5).is_none());
-    }
-
-    #[test]
-    fn compare_command_matches_stays_a_total_order_near_score_ties() {
-        // Regression for the crash where the raw `|score_diff| > 0.1` gate
-        // admitted cycles (a<b<c<a) and Rust's stable sort aborted with
-        // "user-provided comparison function does not correctly implement a
-        // total order" (release `panic = "abort"` produced a core dump).
-        let names = ["alpha", "beta", "gamma"];
-        let commands = names
-            .iter()
-            .map(|name| {
-                let mut command = crate::commands::help::command();
-                command.name = (*name).into();
-                command.aliases = Vec::new();
-                command
-            })
-            .collect::<Vec<_>>();
-        let entries = names
-            .iter()
-            .enumerate()
-            .map(|(index, name)| CommandSearchEntry {
-                command_index: index,
-                command_name: (*name).to_string(),
-                parts: Vec::new(),
-                aliases: Vec::new(),
-                description_words: Vec::new(),
-            })
-            .collect::<Vec<_>>();
-        let matched = |index: usize, score: f64, usage: f64| CommandSuggestionMatch {
-            command: &commands[index],
-            entry: &entries[index],
-            matched_alias: None,
-            score,
-            usage,
-        };
-
-        // Former cycle: 0.12/10.0 < 0.06/5.0 < 0.00/0.0 < 0.12/10.0.
-        let mut sorted = vec![
-            matched(0, 0.12, 10.0),
-            matched(1, 0.06, 5.0),
-            matched(2, 0.0, 0.0),
-        ];
-        sorted.sort_by(|left, right| compare_command_matches(left, right, "zz"));
-        assert_eq!(
-            sorted
-                .iter()
-                .map(|entry| entry.entry.command_name.as_str())
-                .collect::<Vec<_>>(),
-            ["beta", "gamma", "alpha"]
-        );
-
-        // No ordering cycle over a grid of near-tie values.
-        let values = [
-            (0.0, 0.0),
-            (0.04, 1.0),
-            (0.09, 2.0),
-            (0.12, 0.0),
-            (0.15, 3.0),
-            (0.21, 1.0),
-        ];
-        for (index_a, (score_a, usage_a)) in values.iter().enumerate() {
-            for (index_b, (score_b, usage_b)) in values.iter().enumerate() {
-                for (index_c, (score_c, usage_c)) in values.iter().enumerate() {
-                    let a = matched(index_a % 3, *score_a, *usage_a);
-                    let b = matched(index_b % 3, *score_b, *usage_b);
-                    let c = matched(index_c % 3, *score_c, *usage_c);
-                    let ab = compare_command_matches(&a, &b, "zz");
-                    let bc = compare_command_matches(&b, &c, "zz");
-                    let ca = compare_command_matches(&c, &a, "zz");
-                    assert!(
-                        !(ab == Ordering::Less && bc == Ordering::Less && ca == Ordering::Less),
-                        "cycle over {a:?} < {b:?} < {c:?}"
-                    );
-                    assert!(
-                        !(ab == Ordering::Greater
-                            && bc == Ordering::Greater
-                            && ca == Ordering::Greater),
-                        "cycle over {c:?} < {b:?} < {a:?}"
-                    );
-                }
-            }
-        }
-
-        // End-to-end: a larger pseudo-random set previously aborted inside
-        // `sort_by` (the 53-element case reproduced `smallsort.rs:860:5`).
-        let mut seed = 0x1234_5678_9abc_def0u64;
-        let mut rnd = move || {
-            seed = seed
-                .wrapping_mul(6_364_136_223_846_793_005)
-                .wrapping_add(1_442_695_040_888_963_407);
-            (seed >> 33) as u32
-        };
-        let mut many = (0..64)
-            .map(|_| matched(0, (rnd() % 1000) as f64 / 5000.0, (rnd() % 100) as f64 / 10.0))
-            .collect::<Vec<_>>();
-        many.sort_by(|left, right| compare_command_matches(left, right, "zz"));
-        assert_eq!(many.len(), 64);
     }
 
     #[test]

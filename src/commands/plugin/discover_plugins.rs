@@ -141,21 +141,27 @@ pub fn DiscoverPlugins(
                 let mut uninstalled=all_plugins.iter().filter(|p|!p.is_installed&&!is_plugin_blocked_by_policy(&p.plugin_id)).cloned().collect::<Vec<_>>();
                 #[cfg(test)] let counts=if load_test_imports.is_some(){None}else{get_install_counts().await};
                 #[cfg(not(test))] let counts=get_install_counts().await;
-                // Install counts are read once instead of inside the
-                // comparator: the previous version could return
-                // `Ordering::Equal` for NaN pairs while still ordering other
-                // pairs numerically, which is not a total order and made
-                // Rust's `sort_by` abort. Unusable values fall back to the
-                // source's all-names ordering.
-                let install_count=uninstalled.iter().map(|plugin|{
-                    let number=counts.as_ref().and_then(|counts|counts.get(&plugin.plugin_id)).filter(|value|!value.is_null()).map_or(Some(0.0),|value|value.to_number().ok().filter(|number|number.is_finite()));
-                    (plugin.plugin_id.clone(),number)
-                }).collect::<std::collections::HashMap<_,_>>();
-                let counts_usable=install_count.values().all(Option::is_some);
-                if counts_usable {
-                    let number_for=|plugin:&InstallablePlugin|install_count.get(&plugin.plugin_id).copied().flatten().unwrap_or(0.0);
-                    uninstalled.sort_by(|a,b|number_for(b).total_cmp(&number_for(a)).then_with(||crate::tools::grep_tool::javascript_locale_compare(a.entry["name"].as_str().unwrap_or(""),b.entry["name"].as_str().unwrap_or(""))));
-                } else {
+                let sort_failed=std::cell::Cell::new(false);
+                // NaN reaches `partial_cmp().unwrap_or(Equal)` when to_number
+                // fails mid-sort (the Cell mimics the source's try/catch), so
+                // the comparator is not a total order; sorted through the
+                // non-validating JS-sort primitive (utils/js_sort.rs; PR #7).
+                crate::utils::js_sort::sort_by(&mut uninstalled,|a,b| {
+                    let a_raw=counts.as_ref().and_then(|c|c.get(&a.plugin_id)).filter(|v|!v.is_null());
+                    let b_raw=counts.as_ref().and_then(|c|c.get(&b.plugin_id)).filter(|v|!v.is_null());
+                    let equal=match (a_raw,b_raw){
+                        (None,None)=>true,
+                        (None,Some(v))|(Some(v),None)=>v.kind==11&&v.number==Some(0.0),
+                        (Some(a),Some(b)) if a.kind==b.kind=>match a.kind{8|9=>true,10=>a.string_units==b.string_units,11=>a.number.zip(b.number).is_some_and(|(a,b)|a==b),_=>std::ptr::eq(a,b)},
+                        _=>false,
+                    };
+                    if !equal {
+                        let a_number=a_raw.map_or(0.0,|v|v.to_number().unwrap_or_else(|_|{sort_failed.set(true);f64::NAN}));
+                        let b_number=b_raw.map_or(0.0,|v|v.to_number().unwrap_or_else(|_|{sort_failed.set(true);f64::NAN}));
+                        (b_number-a_number).partial_cmp(&0.0).unwrap_or(std::cmp::Ordering::Equal)
+                    } else {crate::tools::grep_tool::javascript_locale_compare(a.entry["name"].as_str().unwrap_or(""),b.entry["name"].as_str().unwrap_or(""))}
+                });
+                if sort_failed.get(){
                     crate::utils::debug::log_for_debugging("Failed to fetch install counts: Cannot convert object to primitive value");
                     uninstalled.sort_by(|a,b|crate::tools::grep_tool::javascript_locale_compare(a.entry["name"].as_str().unwrap_or(""),b.entry["name"].as_str().unwrap_or("")));
                 }
@@ -911,7 +917,10 @@ pub(super) mod tests {
     #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
     async fn mounted_discover_paste_entry_and_width_match_official_bun() {
         crate::utils::process_runtime::initialize_test_process_runtime();
-        let oracle: Value = serde_json::from_str(include_str!("../../../tests/fixtures/oracles/plugin-ui-complete-0914/discover-entry-oracle.json")).unwrap();
+        let oracle: Value = serde_json::from_str(include_str!(
+            "../../../tests/fixtures/oracles/plugin-ui-complete-0914/discover-entry-oracle.json"
+        ))
+        .unwrap();
         for case in oracle.as_array().unwrap() {
             for pasted in [false, true] {
                 let input_text = case["input"].as_str().unwrap();
@@ -1014,7 +1023,10 @@ pub(super) mod tests {
     #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
     async fn mounted_discover_plugins_matches_official_bun_frames_and_install_callbacks() {
         crate::utils::process_runtime::initialize_test_process_runtime();
-        let oracle:Value=serde_json::from_str(include_str!("../../../tests/fixtures/oracles/plugin-ui-complete-0914/panel-oracle.json")).unwrap();
+        let oracle: Value = serde_json::from_str(include_str!(
+            "../../../tests/fixtures/oracles/plugin-ui-complete-0914/panel-oracle.json"
+        ))
+        .unwrap();
         for name in [
             "discover-list",
             "discover-target",
